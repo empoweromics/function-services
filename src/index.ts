@@ -1,4 +1,6 @@
 import * as functions from "firebase-functions";
-import ADMIN_APP from "./routes/index";
+import ADMIN_API from "./modules/admin/routes";
+import CLIENT_API from "./modules/client/routes";
 
-export const api = functions.https.onRequest(ADMIN_APP);
+export const admin = functions.https.onRequest(ADMIN_API);
+export const client = functions.https.onRequest(CLIENT_API);
