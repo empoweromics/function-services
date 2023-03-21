@@ -13,8 +13,8 @@ const port = process.env.PORT ?? 5000;
  * run services
  */
 const app = express();
-app.use("/takweed-eg/empoweromics-dev/client", CLIENT_API);
-app.use("/takweed-eg/empoweromics-dev/admin", ADMIN_API);
+app.use("/empoweromics-dev/us-central1/client", CLIENT_API);
+app.use("/empoweromics-dev/us-central1/admin", ADMIN_API);
 
 process.on("unhandledRejection", error => {
   console.error("unhandledRejection:", error);
@@ -26,5 +26,5 @@ process.on("uncaughtException", error => {
 });
 
 app.listen(port, () =>
-  console.log(`Server Started on Port ${port} and docs on /docs`)
+  console.log(`http://localhost:${port}/empoweromics-dev/us-central1/client`)
 );
