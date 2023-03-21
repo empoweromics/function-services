@@ -6,7 +6,7 @@ export const MyAccount = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 1000 });
+    return res.json({ count: 200 });
   } catch (error) {
     next(error);
   }

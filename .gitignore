@@ -7,3 +7,4 @@ typings/
 firebase-debug.log
 # Node.js dependency directory
 node_modules/
+.env
