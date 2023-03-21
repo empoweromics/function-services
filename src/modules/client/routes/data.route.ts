@@ -1,8 +1,8 @@
 import express from "express";
-import { All } from "../controllers/projects.controller";
+import { getAllPolygonsGeoJsonShaped } from "../controllers/projects.controller";
 
 const router = express.Router();
 
-router.get("/projects", All);
+router.get("/polygons", getAllPolygonsGeoJsonShaped);
 
 export default router;
