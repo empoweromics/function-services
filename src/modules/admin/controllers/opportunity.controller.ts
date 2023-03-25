@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 // import mongoose from "mongoose";
 
-export const getAllUnits = async (
+export const getAllOpportunitis = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -13,7 +13,7 @@ export const getAllUnits = async (
   }
 };
 
-export const getOneUnit = async (
+export const getOneOpportunity = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,7 +25,7 @@ export const getOneUnit = async (
   }
 };
 
-export const createUnit = async (
+export const createOpportunity = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -37,7 +37,7 @@ export const createUnit = async (
   }
 };
 
-export const updateUnit = async (
+export const updateOpportunity = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -49,7 +49,7 @@ export const updateUnit = async (
   }
 };
 
-export const deleteUnit = async (
+export const deleteOpportunity = async (
   req: Request,
   res: Response,
   next: NextFunction
