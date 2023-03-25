@@ -3,24 +3,27 @@ const { Schema } = mongoose;
 
 const DeveloperSchema = new Schema(
   {
+    _id: {
+      require: true,
+      type: String
+    },
     name: {
-      type: String,
-      required: true
+      require: true,
+      type: String
     },
     website: String,
     area: String,
     city: String,
     country: String,
-    description: String,
     logo: String,
     rating: Number,
-    active: {
-      type: Boolean,
-      default: true
+    active: Boolean,
+    i18n: {
+      type: Object
     }
   },
   { timestamps: true }
 );
 
-export const DeveloperModel = mongoose.model("developers", DeveloperSchema);
+export const DeveloperModel = mongoose.model("developer", DeveloperSchema);
 export default DeveloperModel;

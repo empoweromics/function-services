@@ -19,7 +19,8 @@ const OpportunitySchema = new Schema(
   {
     project: {
       type: String,
-      required: true
+      required: true,
+      ref: "projects"
     },
     type: {
       type: String,

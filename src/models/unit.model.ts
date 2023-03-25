@@ -3,31 +3,38 @@ const { Schema } = mongoose;
 
 const UnitSchema = new Schema(
   {
-    code: {
-      type: String,
-      required: true
+    _id: {
+      require: true,
+      type: String
     },
-    category: String,
-    type: String,
+    category: {
+      require: true,
+      type: String
+    },
+    type: {
+      require: true,
+      type: String
+    },
     finishingType: String,
-    city: String,
-    area: String,
-    country: String,
-    developer: String,
-    project: String,
-    licence: String,
+    developer: {
+      type: String,
+      ref: "developers"
+    },
+    project: {
+      type: String,
+      ref: "projects"
+    },
     priceBase: Number,
     spaceBuildUp: Number,
     pricePerMeter: Number,
     paymentYears: Number,
-    estDelivery: Number,
-    active: {
-      type: Boolean,
-      default: true
-    }
+    estDelivery: {
+      type: [Number],
+      required: false
+    },
+    active: Boolean
   },
   { timestamps: true }
 );
-
-export const UnitModel = mongoose.model("units", UnitSchema);
+export const UnitModel = mongoose.model("unit", UnitSchema);
 export default UnitModel;

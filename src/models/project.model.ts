@@ -3,26 +3,33 @@ const { Schema } = mongoose;
 
 const ProjectSchema = new Schema(
   {
-    code: {
-      type: String,
-      required: true
+    _id: {
+      require: true,
+      type: String
     },
     name: {
-      type: String,
-      required: true
+      require: true,
+      type: String
     },
     supplier: String,
+    developer: {
+      type: String,
+      ref: "developers"
+    },
     state: String,
     category: String,
-    description: String,
     area: String,
     city: String,
     country: String,
     acres: Number,
     rating: Number,
+    polygonHasNull: Boolean,
     active: {
       type: Boolean,
       default: true
+    },
+    i18n: {
+      type: Object
     },
     geoJSON: {
       type: {
@@ -39,4 +46,4 @@ const ProjectSchema = new Schema(
   { timestamps: true }
 );
 
-export const ProjectModel = mongoose.model("projects", ProjectSchema);
+export const ProjectModel = mongoose.model("project", ProjectSchema);
