@@ -1,57 +1,76 @@
 import { NextFunction, Request, Response } from "express";
 
 /**
- * MyAccount data and profile balance
+ * getAllOpportunities (Filter / search)
  * @param req
  * @param res
  * @param next
  * @returns
  */
-export const myAccount = async (
+export const getAllOpportunities = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    return res.json({});
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * myTransacrions get (Filter / search for all user Transacrions)
+ * getOpportunityDetails lookups
  * @param req
  * @param res
  * @param next
  * @returns
  */
-export const myTransacrions = async (
+export const getOpportunityDetails = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    return res.json({});
   } catch (error) {
     next(error);
   }
 };
 
 /**
- * updateProfile function to get user information and update his profile
+ * addOpportunity submit a new one
  * @param req
  * @param res
  * @param next
  * @returns
  */
-export const updateProfile = async (
+export const addOpportunity = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    return res.json({});
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * deleteOpportunity soft delete
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
+export const deleteOpportunity = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.json({});
   } catch (error) {
     next(error);
   }

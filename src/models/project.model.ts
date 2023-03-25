@@ -11,7 +11,7 @@ const ProjectSchema = new Schema(
       require: true,
       type: String
     },
-    supplier: String,
+    developer_name: String,
     developer: {
       type: String,
       ref: "developers"
