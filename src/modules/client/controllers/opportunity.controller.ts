@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ErrorMessage } from "../../../config/errors";
 
 /**
  * getAllOpportunities (Filter / search)
@@ -51,7 +52,21 @@ export const addOpportunity = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({});
+    const { title, content, topicId, image } = req.body;
+    if (!title || !content) {
+      return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
+    }
+    const posts = new PostsModel({
+      title,
+      content,
+      topicId,
+      image,
+      active: true
+    });
+    const data = await posts.save();
+    if (!data)
+      return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+    return res.status(201).json({ data });
   } catch (error) {
     next(error);
   }

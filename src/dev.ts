@@ -26,5 +26,7 @@ process.on("uncaughtException", error => {
 });
 
 app.listen(port, () =>
-  console.log(`http://localhost:${port}/empoweromics-dev/us-central1/client`)
+  console.log(
+    `http://localhost:${port}/empoweromics-dev/us-central1/client \nhttp://localhost:${port}/empoweromics-dev/us-central1/admin`
+  )
 );

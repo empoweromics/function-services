@@ -44,5 +44,8 @@ const OpportunitySchema = new Schema(
   { timestamps: true }
 );
 
-export const DeveloperModel = mongoose.model("opportunity", OpportunitySchema);
-export default DeveloperModel;
+export const OpportunityModel = mongoose.model(
+  "opportunity",
+  OpportunitySchema
+);
+export default OpportunityModel;
