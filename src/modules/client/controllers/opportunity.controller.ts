@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ErrorMessage } from "../../../config/errors";
+import { OpportunityModel } from "../../../models/opportunity.model";
 
 /**
  * getAllOpportunities (Filter / search)
@@ -56,7 +57,7 @@ export const addOpportunity = async (
     if (!title || !content) {
       return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
     }
-    const posts = new PostsModel({
+    const posts = new OpportunityModel({
       title,
       content,
       topicId,
