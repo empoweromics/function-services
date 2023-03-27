@@ -1,20 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-export interface Pricing {
-  total: number;
-  monthly: number;
-  downPayment: number;
-}
-
-const pricingSchema = new mongoose.Schema<Pricing>(
-  {
-    total: { type: Number, required: true },
-    monthly: { type: Number, required: true },
-    downPayment: { type: Number, required: true }
-  },
-  { _id: false, versionKey: false }
-);
 const OpportunitySchema = new Schema(
   {
     project: {
@@ -35,7 +21,11 @@ const OpportunitySchema = new Schema(
       ref: "user",
       required: true
     },
-    pricing: pricingSchema,
+    pricing: {
+      total: Number,
+      monthly: Number,
+      downPayment: Number
+    },
     maxDelivery: {
       type: Number,
       default: 1

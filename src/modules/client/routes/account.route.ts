@@ -1,9 +1,10 @@
 import express from "express";
-import { auth, myAccount } from "../controllers/account.controller";
+import { myAccount } from "../controllers/account.controller";
+import { protectedRoute } from "../../../middlewares/auth.middleware";
 
 const router = express.Router();
 
+router.use(protectedRoute);
 router.get("/", myAccount);
-router.put("/auth/:id", auth);
 
 export default router;

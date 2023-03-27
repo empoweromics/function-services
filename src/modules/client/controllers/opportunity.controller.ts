@@ -1,6 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { ErrorMessage } from "../../../config/errors";
 import { OpportunityModel } from "../../../models/opportunity.model";
+import { HttpStatus } from "../../../config/httpCodes";
+
+interface FilterType {
+  project?: string;
+  type?: string;
+  finishingType?: string;
+}
 
 /**
  * getAllOpportunities (Filter / search)
@@ -15,7 +22,13 @@ export const getAllOpportunities = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({});
+    const data = await OpportunityModel.find(filterSearch(req.query));
+    if (!data)
+      return res
+        .status(HttpStatus.NO_CONTENT)
+        .json({ message: ErrorMessage.NO_CONTENT });
+
+    return res.send({ data, length: data.length });
   } catch (error) {
     next(error);
   }
@@ -90,4 +103,12 @@ export const deleteOpportunity = async (
   } catch (error) {
     next(error);
   }
+};
+
+const filterSearch = (body: FilterType) => {
+  const filter: Record<string, Record<string, string> | boolean> = {};
+  if (body.project) filter["project"] = { $eq: body.project };
+  if (body.type) filter["type"] = { $eq: body.type };
+  if (body.finishingType) filter["finishingType"] = { $eq: body.finishingType };
+  return filter;
 };

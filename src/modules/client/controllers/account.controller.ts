@@ -11,11 +11,7 @@ import { HttpStatus } from "../../../config/httpCodes";
  */
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await UserModel.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      lean: true
-    });
-
+    let data = await UserModel.findByIdAndUpdate(req.params.id, req.body);
     if (!data) {
       data = await UserModel.create(req.body);
     }
