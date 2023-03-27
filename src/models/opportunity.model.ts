@@ -26,8 +26,12 @@ const OpportunitySchema = new Schema(
       type: String,
       required: true
     },
+    finishingType: {
+      type: String,
+      required: true
+    },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "user",
       required: true
     },

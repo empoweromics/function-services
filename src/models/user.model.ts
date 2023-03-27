@@ -26,7 +26,8 @@ export interface UserDocument extends User, mongoose.Document {
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
+    _id: String,
+    displayName: {
       type: String,
       required: true,
       trim: true
@@ -35,29 +36,25 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    phone: {
-      type: String,
-      trim: true
-    },
+    phone: String,
+    photoUrl: String,
     role: {
       type: String,
       default: "client",
       enum: ["client", "admin"]
     },
-    fcm: {
-      type: String
+    fcm: String,
+    lastLoginAt: String,
+    providerUserInfo: {
+      type: Object
     },
     device: {
       type: Object
     },
-    lastlogin: {
-      type: Date,
-      default: new Date()
-    }
+    emailVerified: Boolean,
+    phoneVerified: Boolean
   },
   { timestamps: true }
 );
 
 export const UserModel = mongoose.model<UserDocument>("user", UserSchema);
-
-export default UserModel;

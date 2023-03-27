@@ -1,8 +1,9 @@
 import express from "express";
-import { myAccount } from "../controllers/account.controller";
+import { auth, myAccount } from "../controllers/account.controller";
 
 const router = express.Router();
 
 router.get("/", myAccount);
+router.put("/auth/:id", auth);
 
 export default router;
