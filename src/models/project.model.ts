@@ -35,6 +35,7 @@ const ProjectSchema = new Schema(
     country: String,
     acres: Number,
     rating: Number,
+    units: Object,
     polygonHasNull: Boolean,
     active: {
       type: Boolean,

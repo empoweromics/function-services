@@ -47,17 +47,31 @@ export const projectDetails = async (
     if (!project) {
       return res.status(204).json({ message: "No content" });
     }
+    return res.json(project);
+  } catch (error) {
+    next(error);
+  }
+};
 
-    const units = await getPricePerMeter(project._id);
-
-    return res.json({
-      project,
-      units: {
-        totla: units.length,
-        start: units[0],
-        avg: units[Math.round((units.length - 1) / 2)]
-      }
-    });
+/**
+ * Get unit List per project
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
+export const availableUnits = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+  try {
+    const units = await getPricePerMeter(id);
+    if (!units) {
+      return res.status(204).json({ message: "No content" });
+    }
+    return res.json(units);
   } catch (error) {
     next(error);
   }

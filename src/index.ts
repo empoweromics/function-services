@@ -8,6 +8,6 @@ export const client = functions
     // Ensure the function has enough memory and time
     // to process large files
     timeoutSeconds: 300,
-    memory: "1GB"
+    memory: "512MB"
   })
   .https.onRequest(CLIENT_API);
