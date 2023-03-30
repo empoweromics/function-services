@@ -1,5 +1,5 @@
 import Account from "./account.route";
-import Data from "./data.route";
+import Project from "./project.route";
 import express from "express";
 import cors from "cors";
 import { loggerMiddleware } from "../../../middlewares";
@@ -16,6 +16,6 @@ CLIENT_API.use(loggerMiddleware);
 CLIENT_API.all("/check", (req, res) => res.status(200).send("Running ..."));
 CLIENT_API.put("/auth/:id", auth);
 CLIENT_API.use("/account", Account);
-CLIENT_API.use("/data", Data);
+CLIENT_API.use("/project", Project);
 
 export default CLIENT_API;

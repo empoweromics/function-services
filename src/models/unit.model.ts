@@ -40,4 +40,3 @@ const UnitSchema = new Schema(
   { timestamps: true }
 );
 export const UnitModel = mongoose.model("unit", UnitSchema);
-export default UnitModel;
