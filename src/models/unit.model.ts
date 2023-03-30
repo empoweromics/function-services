@@ -24,7 +24,10 @@ const UnitSchema = new Schema(
       type: String,
       ref: "projects"
     },
-    priceBase: Number,
+    priceBase: {
+      type: Number,
+      require: true
+    },
     spaceBuildUp: Number,
     pricePerMeter: Number,
     paymentYears: Number,

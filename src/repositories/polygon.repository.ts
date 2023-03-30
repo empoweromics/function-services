@@ -11,18 +11,11 @@ export const allPolygonsGeoJsonShaped = () =>
         type: "Feature",
         geometry: "$geoJSON",
         properties: {
-          code: "$code",
+          logo: "$logo",
+          developer: "$developer",
           name: "$name",
-          supplier: "$supplier",
-          state: "$state",
           category: "$category",
-          description: "$description",
-          area: "$area",
-          city: "$city",
-          country: "$country",
-          acres: "$acres",
-          rating: "$rating",
-          active: "$active"
+          area: "$area"
         }
       }
     }

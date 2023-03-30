@@ -1,6 +1,18 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+interface geoJSON {
+  type: "Polygon" | "Point";
+  coordinates: Array<Array<number>>;
+}
+
+const geoJSONSchema = new mongoose.Schema<geoJSON>(
+  {
+    type: { type: String, required: true },
+    coordinates: { type: [[Number]], required: true }
+  },
+  { _id: false, versionKey: false }
+);
 const ProjectSchema = new Schema(
   {
     _id: {
@@ -14,7 +26,7 @@ const ProjectSchema = new Schema(
     developer_name: String,
     developer: {
       type: String,
-      ref: "developers"
+      ref: "developer"
     },
     state: String,
     category: String,
@@ -31,17 +43,7 @@ const ProjectSchema = new Schema(
     i18n: {
       type: Object
     },
-    geoJSON: {
-      type: {
-        type: String,
-        enum: ["Polygon"],
-        required: true
-      },
-      coordinates: {
-        type: [Number],
-        required: true
-      }
-    }
+    geoJSON: geoJSONSchema
   },
   { timestamps: true }
 );
