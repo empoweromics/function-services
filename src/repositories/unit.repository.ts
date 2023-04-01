@@ -17,7 +17,7 @@ export const getPricePerMeterGroupByType = (projectId: string) =>
         count: { $sum: 1 }, // this means that the count will increment by 1
         units: {
           $push: {
-            finishingType: "$finishingType",
+            id: "$_id",
             priceBase: "$priceBase",
             spaceBuildUp: "$spaceBuildUp",
             paymentYears: "$paymentYears"
