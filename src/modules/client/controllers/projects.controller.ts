@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { allPolygonsGeoJsonShaped } from "../../../repositories/polygon.repository";
 import { findProjectDetail } from "../../../repositories/project.repository";
-import { getPricePerMeter } from "../../../repositories/unit.repository";
+import { getPricePerMeterGroupByType } from "../../../repositories/unit.repository";
 
 // const now = new Date();
 // const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -67,7 +67,8 @@ export const availableUnits = async (
 ) => {
   const id = req.params.id;
   try {
-    const units = await getPricePerMeter(id);
+    // const units = await getPricePerMeter(id);
+    const units = await getPricePerMeterGroupByType(id);
     if (!units) {
       return res.status(204).json({ message: "No content" });
     }
