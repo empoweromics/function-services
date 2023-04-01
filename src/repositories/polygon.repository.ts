@@ -6,17 +6,16 @@ export const allPolygonsGeoJsonShaped = () =>
       polygonHasNull: false
     },
     {
-      projection: {
-        _id: 1,
-        type: "Feature",
-        geometry: "$geoJSON",
-        properties: {
-          logo: "$logo",
-          developer: "$developer",
-          name: "$name",
-          category: "$category",
-          area: "$area"
-        }
+      type: "Feature",
+      geometry: "$geoJSON",
+      properties: {
+        id: "$_id",
+        logo: "$logo",
+        developer: "$developer",
+        name: "$name",
+        category: "$category",
+        area: "$area",
+        acres: "$acres"
       }
     }
   );
