@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 
-const JWT_SECRET = "sd51g5dss6d2g65g1";
+const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : "test";
 export const JwtSign = (
   data: { _id: string | Types.ObjectId; name: string },
   expiresIn: "1d" | "10d" | "1y" | undefined = undefined
