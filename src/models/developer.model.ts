@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import { randomUUID } from "../utils/uuid";
 const { Schema } = mongoose;
 
 const DeveloperSchema = new Schema(
   {
     _id: {
       require: true,
-      type: String
+      type: String,
+      default: () => randomUUID("d-")
     },
     name: {
       require: true,

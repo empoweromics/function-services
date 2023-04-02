@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { randomUUID } from "../utils/uuid";
 const { Schema } = mongoose;
 
 interface geoJSON {
@@ -17,7 +18,8 @@ const ProjectSchema = new Schema(
   {
     _id: {
       require: true,
-      type: String
+      type: String,
+      default: () => randomUUID("p-")
     },
     name: {
       require: true,

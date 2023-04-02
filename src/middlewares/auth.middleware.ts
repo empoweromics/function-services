@@ -8,16 +8,16 @@ export const protectedRoute = async (
   next: NextFunction
 ) => {
   try {
-    const email = req.headers.email;
-    const localId = req.headers.localId;
-    if (!email || !localId) {
+    const _id = req.headers.user;
+    if (!_id) {
       throw new UnauthorizedError("ProtectedRoute", res);
     }
-    const user = UserModel.findOne({ _id: localId, email });
+    const user = await UserModel.findOne({ _id });
     if (!user) {
       throw new UnauthorizedError("ProtectedRoute", res);
     }
-    next();
+    res.locals.user = user;
+    return next();
   } catch (e) {
     if (e instanceof UnauthorizedError) return;
     next(e);

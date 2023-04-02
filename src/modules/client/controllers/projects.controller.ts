@@ -67,7 +67,6 @@ export const availableUnits = async (
 ) => {
   const id = req.params.id;
   try {
-    // const units = await getPricePerMeter(id);
     const units = await getPricePerMeterGroupByType(id);
     if (!units) {
       return res.status(204).json({ message: "No content" });

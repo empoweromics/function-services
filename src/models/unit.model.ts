@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import { randomUUID } from "../utils/uuid";
 const { Schema } = mongoose;
 
 const UnitSchema = new Schema(
   {
     _id: {
       require: true,
-      type: String
+      type: String,
+      default: () => randomUUID("u-")
     },
     category: {
       require: true,
@@ -18,10 +20,12 @@ const UnitSchema = new Schema(
     finishingType: String,
     developer: {
       type: String,
+      index: true,
       ref: "developers"
     },
     project: {
       type: String,
+      index: true,
       ref: "projects"
     },
     priceBase: {

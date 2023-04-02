@@ -22,7 +22,17 @@ export const getAllOpportunities = async (
   next: NextFunction
 ) => {
   try {
-    const data = await OpportunityModel.find(filterSearch(req.query));
+    const user = res.locals.user._id;
+    const page = req.headers.page
+      ? parseInt(req.headers.page.toString()) - 1
+      : 0;
+    let limit = 10;
+    const skip = page * limit;
+    limit = limit + skip;
+
+    const data = await OpportunityModel.find({ user, active: true })
+      .limit(limit)
+      .skip(skip);
     if (!data)
       return res
         .status(HttpStatus.NO_CONTENT)
@@ -66,15 +76,17 @@ export const addOpportunity = async (
   next: NextFunction
 ) => {
   try {
-    const { title, content, topicId, image } = req.body;
-    if (!title || !content) {
+    const { client, project, unit, budget } = req.body;
+    if (!client || !project || !unit || !budget) {
       return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
     }
+    const user = res.locals.user._id;
     const posts = new OpportunityModel({
-      title,
-      content,
-      topicId,
-      image,
+      client,
+      project,
+      unit,
+      budget,
+      user,
       active: true
     });
     const data = await posts.save();

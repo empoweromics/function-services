@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { randomUUID } from "../utils/uuid";
 
 export interface Provider {
   name: "google";
@@ -26,7 +27,11 @@ export interface UserDocument extends User, mongoose.Document {
 
 const UserSchema = new mongoose.Schema(
   {
-    _id: String,
+    _id: {
+      require: true,
+      type: String,
+      default: () => randomUUID("user-")
+    },
     displayName: {
       type: String,
       required: true,
