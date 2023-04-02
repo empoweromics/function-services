@@ -3,12 +3,6 @@ import { ErrorMessage } from "../../../config/errors";
 import { OpportunityModel } from "../../../models/opportunity.model";
 import { HttpStatus } from "../../../config/httpCodes";
 
-interface FilterType {
-  project?: string;
-  type?: string;
-  finishingType?: string;
-}
-
 /**
  * getAllOpportunities (Filter / search)
  * @param req
@@ -115,12 +109,4 @@ export const deleteOpportunity = async (
   } catch (error) {
     next(error);
   }
-};
-
-const filterSearch = (body: FilterType) => {
-  const filter: Record<string, Record<string, string> | boolean> = {};
-  if (body.project) filter["project"] = { $eq: body.project };
-  if (body.type) filter["type"] = { $eq: body.type };
-  if (body.finishingType) filter["finishingType"] = { $eq: body.finishingType };
-  return filter;
 };
