@@ -2,56 +2,68 @@ import mongoose from "mongoose";
 import { randomUUID } from "../utils/uuid";
 const { Schema } = mongoose;
 
-const clientSchema = new Schema({
-  name: {
-    type: String,
-    require: true
+const clientSchema = new Schema(
+  {
+    name: {
+      type: String,
+      require: true
+    },
+    phone: {
+      type: String,
+      require: true
+    },
+    directly: Boolean
   },
-  phone: {
-    type: String,
-    require: true
-  },
-  directly: Boolean
-});
+  { _id: false, versionKey: false }
+);
 
-const projectSchema = new Schema({
-  id: {
-    type: String,
-    index: true
+const projectSchema = new Schema(
+  {
+    id: {
+      type: String,
+      index: true
+    },
+    name: String,
+    developer: String
   },
-  name: String,
-  developer: String
-});
+  { _id: false, versionKey: false }
+);
 
-const unitSchema = new Schema({
-  id: {
-    type: String,
-    index: true
+const unitSchema = new Schema(
+  {
+    id: {
+      type: String,
+      index: true
+    },
+    priceBase: {
+      type: Number,
+      required: true
+    },
+    spaceBuildUp: {
+      type: Number,
+      required: true
+    },
+    paymentYears: Number
   },
-  priceBase: {
-    type: Number,
-    required: true
+  { _id: false, versionKey: false }
+);
+const budgetSchema = new Schema(
+  {
+    downpayment: {
+      type: Number,
+      required: true
+    },
+    installmentAmountDue: {
+      type: Number,
+      required: true
+    },
+    totalNumberOfInstallments: {
+      type: Number,
+      required: true
+    }
   },
-  spaceBuildUp: {
-    type: Number,
-    required: true
-  },
-  paymentYears: Number
-});
-const budgetSchema = new Schema({
-  downpayment: {
-    type: Number,
-    required: true
-  },
-  installmentAmountDue: {
-    type: Number,
-    required: true
-  },
-  totalNumberOfInstallments: {
-    type: Number,
-    required: true
-  }
-});
+  { _id: false, versionKey: false }
+);
 const OpportunitySchema = new Schema(
   {
     _id: {

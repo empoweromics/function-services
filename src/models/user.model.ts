@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { randomUUID } from "../utils/uuid";
 
 export interface Provider {
   name: "google";
@@ -29,8 +28,7 @@ const UserSchema = new mongoose.Schema(
   {
     _id: {
       require: true,
-      type: String,
-      default: () => randomUUID("user-")
+      type: String
     },
     displayName: {
       type: String,

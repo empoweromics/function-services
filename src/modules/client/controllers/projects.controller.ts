@@ -3,9 +3,6 @@ import { allPolygonsGeoJsonShaped } from "../../../repositories/polygon.reposito
 import { findProjectDetail } from "../../../repositories/project.repository";
 import { getPricePerMeterGroupByType } from "../../../repositories/unit.repository";
 
-// const now = new Date();
-// const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
 /**
  * function to retrive all project's Polygons
  * @param req

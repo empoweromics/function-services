@@ -12,8 +12,7 @@ export const ErrorMessage = {
   INVALID_OTP_HEADER_TOKEN: "Invalid OTP header token (otpToken)",
   NO_RESOURCE_FOUND: "Invalid resource ",
   NO_GPX_POINTS: "Invalid GPX polygons ",
-  INVALID_PHONE: "Invalid phone number",
-  INVALID_CREDENTIALS: "wrong phone number or password incorrect",
+  INVALID_CREDENTIALS: "wrong email or password incorrect",
   OTP_NOT_VERIFIED: "OTP Not verfied , please verfy your number before login",
   SOMETHING_WRONG_FILE: "Something Wrong Happened Parsing file!",
   PHONE_REGISTERD:

@@ -34,7 +34,9 @@ export const myAccount = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    const user = res.locals.user;
+
+    return res.json({ user });
   } catch (error) {
     next(error);
   }
