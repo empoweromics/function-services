@@ -12,3 +12,14 @@ export const findProjectDetail = (id: string) =>
     developer: 1,
     developer_name: 1
   });
+
+export const findSimilarDevProjects = (developer: string | undefined) =>
+  ProjectModel.find(
+    { developer },
+    {
+      name: 1,
+      developer_name: 1,
+      logo: 1,
+      rating: 1
+    }
+  ).limit(5);

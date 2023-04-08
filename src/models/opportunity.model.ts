@@ -81,7 +81,7 @@ const OpportunitySchema = new Schema(
     },
     unit: {
       type: unitSchema,
-      required: true
+      required: false
     },
     budget: {
       type: budgetSchema,

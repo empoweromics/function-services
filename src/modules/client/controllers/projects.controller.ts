@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { allPolygonsGeoJsonShaped } from "../../../repositories/polygon.repository";
-import { findProjectDetail } from "../../../repositories/project.repository";
+import {
+  findProjectDetail,
+  findSimilarDevProjects
+} from "../../../repositories/project.repository";
 import { getPricePerMeterGroupByType } from "../../../repositories/unit.repository";
 
 /**
@@ -44,7 +47,9 @@ export const projectDetails = async (
     if (!project) {
       return res.status(204).json({ message: "No content" });
     }
-    return res.json(project);
+    const developer_projects = await findSimilarDevProjects(project.developer);
+
+    return res.json({ project, developer_projects });
   } catch (error) {
     next(error);
   }
