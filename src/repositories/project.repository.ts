@@ -14,9 +14,7 @@ export const findProjectDetail = (id: string) =>
       developer: 1,
       developer_name: 1
     }
-  )
-    .populate("developer")
-    .exec();
+  );
 
 export const findSimilarDevProjects = (developer: string | undefined) =>
   ProjectModel.find(
