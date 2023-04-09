@@ -71,14 +71,13 @@ export const addOpportunity = async (
 ) => {
   try {
     const { client, project, unit, budget } = req.body;
-    if (!client || !project || !unit || !budget) {
+    if (!client || !project || !budget) {
       return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
     }
     const user = res.locals.user._id;
     const posts = new OpportunityModel({
       client,
       project,
-      unit,
       budget,
       user,
       active: true

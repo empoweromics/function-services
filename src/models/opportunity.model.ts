@@ -29,24 +29,6 @@ const projectSchema = new Schema(
   { _id: false, versionKey: false }
 );
 
-const unitSchema = new Schema(
-  {
-    id: {
-      type: String,
-      index: true
-    },
-    priceBase: {
-      type: Number,
-      required: false
-    },
-    spaceBuildUp: {
-      type: Number,
-      required: false
-    },
-    paymentYears: Number
-  },
-  { _id: false, versionKey: false }
-);
 const budgetSchema = new Schema(
   {
     downpayment: {
@@ -79,10 +61,7 @@ const OpportunitySchema = new Schema(
       type: projectSchema,
       required: true
     },
-    unit: {
-      type: unitSchema,
-      required: false
-    },
+
     budget: {
       type: budgetSchema,
       required: true
