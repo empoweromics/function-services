@@ -28,7 +28,7 @@ const ProjectSchema = new Schema(
     developer_name: String,
     developer: {
       type: String,
-      ref: "developer"
+      ref: "developers"
     },
     state: String,
     category: String,

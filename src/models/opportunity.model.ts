@@ -37,11 +37,11 @@ const unitSchema = new Schema(
     },
     priceBase: {
       type: Number,
-      required: true
+      required: false
     },
     spaceBuildUp: {
       type: Number,
-      required: true
+      required: false
     },
     paymentYears: Number
   },
