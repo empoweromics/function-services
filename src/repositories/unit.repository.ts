@@ -20,7 +20,8 @@ export const getPricePerMeterGroupByType = (projectId: string) =>
             id: "$_id",
             priceBase: "$priceBase",
             spaceBuildUp: "$spaceBuildUp",
-            paymentYears: "$paymentYears"
+            paymentYears: "$paymentYears",
+            estDelivery: "$estDelivery"
           }
         }
       }
