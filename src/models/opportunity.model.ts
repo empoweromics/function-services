@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface OpportunityDocument extends mongoose.Document {
+  client: object;
+  project: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
+  budget: object;
+  status: string;
+  notes: string;
+  active: boolean;
+}
+
 const clientSchema = new Schema(
   {
     name: {

@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface empDocument extends mongoose.Document {
+  inputs: object;
+  outputs: object;
+  active: boolean;
+  user?: mongoose.Types.ObjectId;
+  views: number;
+}
+
 const inputSchema = new Schema(
   {
     clientname: {
@@ -67,4 +75,4 @@ const empSchema = new Schema(
   { timestamps: true }
 );
 
-export const OpportunityModel = mongoose.model("emp", empSchema);
+export const empModel = mongoose.model("emp", empSchema);

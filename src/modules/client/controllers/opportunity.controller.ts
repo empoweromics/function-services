@@ -75,7 +75,7 @@ export const addOpportunity = async (
       return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
     }
     const user = res.locals.user._id;
-    const posts = new OpportunityModel({
+    const opportunity = new OpportunityModel({
       client,
       project,
       budget,
@@ -83,7 +83,7 @@ export const addOpportunity = async (
       notes,
       active: true
     });
-    const data = await posts.save();
+    const data = await opportunity.save();
     if (!data)
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
     return res.status(201).json({ data });
