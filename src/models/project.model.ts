@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { randomUUID } from "../utils/uuid";
 const { Schema } = mongoose;
 
 interface geoJSON {
