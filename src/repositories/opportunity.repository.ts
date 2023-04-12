@@ -15,5 +15,7 @@ export const opportunityRepo = {
       .populate("project", "name i18n area units")
       .exec(),
 
-  deleteOne: (id: string) => OpportunityModel.findByIdAndDelete(id).exec()
+  deleteOne: (id: string) => OpportunityModel.findByIdAndDelete(id).exec(),
+  Create: (item: OpportunityDocument | Array<OpportunityDocument>) =>
+    OpportunityModel.create(item)
 };

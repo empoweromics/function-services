@@ -6,7 +6,7 @@ export interface OpportunityDocument extends mongoose.Document {
   project: mongoose.Types.ObjectId;
   user: mongoose.Types.ObjectId;
   budget: object;
-  status: string;
+  status?: string;
   notes: string;
   active: boolean;
 }

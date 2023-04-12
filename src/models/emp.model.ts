@@ -1,9 +1,18 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+interface Result {
+  project: mongoose.Schema.Types.ObjectId;
+  developer: mongoose.Schema.Types.ObjectId;
+  unit: mongoose.Schema.Types.ObjectId;
+}
 export interface empDocument extends mongoose.Document {
   inputs: object;
-  outputs: object;
+  outputs: {
+    result1: Result;
+    result2: Result;
+    result3: Result;
+  };
   active: boolean;
   user?: mongoose.Types.ObjectId;
   views: number;
@@ -34,15 +43,39 @@ const inputSchema = new Schema(
   { _id: false, versionKey: false }
 );
 
-const projectSchema = new Schema(
+const resultSchema = new Schema(
   {
-    _id: {
+    project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "project",
       required: true
     },
-    units: {
-      type: Array,
+    developer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project",
+      required: true
+    },
+    unit: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "unit",
+      required: true
+    }
+  },
+  { _id: false, versionKey: false }
+);
+
+const outputsSchema = new Schema(
+  {
+    result1: {
+      type: resultSchema,
+      required: true
+    },
+    result2: {
+      type: resultSchema,
+      required: true
+    },
+    result3: {
+      type: resultSchema,
       required: true
     }
   },
@@ -56,7 +89,7 @@ const empSchema = new Schema(
       required: true
     },
     outputs: {
-      type: projectSchema,
+      type: outputsSchema,
       required: true
     },
     active: {
