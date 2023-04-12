@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { UnitModel } from "../models/unit.model";
 
 export const getPricePerMeter = (projectId: string) =>
@@ -10,7 +11,7 @@ export const getPricePerMeter = (projectId: string) =>
 
 export const getPricePerMeterGroupByType = (projectId: string) =>
   UnitModel.aggregate([
-    { $match: { project: projectId } },
+    { $match: { project: new mongoose.Types.ObjectId(projectId) } },
     {
       $group: {
         _id: "$type",

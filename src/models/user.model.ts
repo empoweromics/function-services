@@ -1,32 +1,18 @@
 import mongoose from "mongoose";
 
-export interface Provider {
-  name: "google";
-  providerId: "google.com";
-  uid: string;
-  info: {
-    photoURL: string;
-    phoneNumber: string;
-  };
-}
-export type RolesType = "ADMIN" | "CLIENT";
-
-export interface User {
-  name: string;
-  email: string;
-  provider: Provider;
-  phone: string;
-  role: RolesType;
-}
-
-export interface UserDocument extends User, mongoose.Document {
-  createdAt: Date;
-  updatedAt: Date;
-}
+// export interface Provider {
+//   name: "google";
+//   providerId: "google.com";
+//   uid: string;
+//   info: {
+//     photoURL: string;
+//     phoneNumber: string;
+//   };
+// }
 
 const UserSchema = new mongoose.Schema(
   {
-    _id: {
+    firebaseId: {
       require: true,
       type: String
     },
@@ -41,11 +27,6 @@ const UserSchema = new mongoose.Schema(
     },
     phone: String,
     photoUrl: String,
-    role: {
-      type: String,
-      default: "client",
-      enum: ["client", "admin"]
-    },
     fcm: String,
     lastLoginAt: String,
     providerUserInfo: {
@@ -60,4 +41,4 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const UserModel = mongoose.model<UserDocument>("user", UserSchema);
+export const UserModel = mongoose.model("user", UserSchema);

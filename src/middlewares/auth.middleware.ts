@@ -12,7 +12,7 @@ export const protectedRoute = async (
     if (!_id) {
       throw new UnauthorizedError("ProtectedRoute", res);
     }
-    const user = await UserModel.findOne({ _id });
+    const user = await UserModel.findOne({ firebaseId: _id });
     if (!user) {
       throw new UnauthorizedError("ProtectedRoute", res);
     }

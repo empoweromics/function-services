@@ -16,19 +16,13 @@ const geoJSONSchema = new mongoose.Schema<geoJSON>(
 );
 const ProjectSchema = new Schema(
   {
-    _id: {
-      require: true,
-      type: String,
-      default: () => randomUUID("p-")
-    },
     name: {
       require: true,
       type: String
     },
-    developer_name: String,
     developer: {
-      type: String,
-      ref: "developers"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "developer"
     },
     state: String,
     category: String,
@@ -37,6 +31,7 @@ const ProjectSchema = new Schema(
     country: String,
     acres: Number,
     rating: Number,
+    attachments: [String],
     units: Object,
     polygonHasNull: Boolean,
     active: {

@@ -67,9 +67,9 @@ export const availableUnits = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id = req.params.id;
+  const projectId = req.params.id;
   try {
-    const units = await getPricePerMeterGroupByType(id);
+    const units = await getPricePerMeterGroupByType(projectId);
     if (!units) {
       return res.status(204).json({ message: "No content" });
     }

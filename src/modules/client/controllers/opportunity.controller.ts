@@ -70,7 +70,7 @@ export const addOpportunity = async (
   next: NextFunction
 ) => {
   try {
-    const { client, project, budget } = req.body;
+    const { client, project, budget, notes } = req.body;
     if (!client || !project || !budget) {
       return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
     }
@@ -80,6 +80,7 @@ export const addOpportunity = async (
       project,
       budget,
       user,
+      notes,
       active: true
     });
     const data = await posts.save();

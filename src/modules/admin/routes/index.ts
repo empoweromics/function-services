@@ -1,5 +1,6 @@
 import Dashboard from "./dashboard.route";
 import Account from "./account.route";
+import Project from "./projects.route";
 import express from "express";
 import cors from "cors";
 
@@ -9,5 +10,6 @@ ADMIN_API.use(express.json());
 
 ADMIN_API.use("/dashboard", Dashboard);
 ADMIN_API.use("/account", Account);
+ADMIN_API.use("/project", Project);
 
 export default ADMIN_API;

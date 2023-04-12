@@ -10,6 +10,7 @@ export const findProjectDetail = (id: string) =>
       i18n: 1,
       logo: 1,
       rating: 1,
+      attachments: 1,
       units: 1,
       developer: 1,
       developer_name: 1

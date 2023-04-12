@@ -17,18 +17,6 @@ const clientSchema = new Schema(
   { _id: false, versionKey: false }
 );
 
-const projectSchema = new Schema(
-  {
-    id: {
-      type: String,
-      index: true
-    },
-    name: String,
-    developer: String
-  },
-  { _id: false, versionKey: false }
-);
-
 const budgetSchema = new Schema(
   {
     downpayment: {
@@ -48,27 +36,21 @@ const budgetSchema = new Schema(
 );
 const OpportunitySchema = new Schema(
   {
-    _id: {
-      require: true,
-      type: String,
-      default: () => randomUUID("o-")
-    },
     client: {
       type: clientSchema,
       required: true
     },
     project: {
-      type: projectSchema,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project",
       required: true
     },
-
     budget: {
       type: budgetSchema,
       required: true
     },
     user: {
-      type: String,
-      index: true,
+      type: mongoose.Schema.Types.ObjectId,
       required: true
     },
     status: {
@@ -76,6 +58,7 @@ const OpportunitySchema = new Schema(
       enum: ["pendding", "deal", "closed"],
       default: "pendding"
     },
+    notes: String,
     active: {
       type: Boolean,
       default: true
