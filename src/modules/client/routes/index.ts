@@ -2,6 +2,7 @@ import Account from "./account.route";
 import Project from "./project.route";
 import Opportunity from "./opportunity.route";
 import Master from "./master.route";
+import Emp from "./emp.route";
 import express from "express";
 import cors from "cors";
 import { loggerMiddleware } from "../../../middlewares";
@@ -23,5 +24,6 @@ CLIENT_API.use("/account", Account);
 CLIENT_API.use("/project", Project);
 CLIENT_API.use("/opportunity", Opportunity);
 CLIENT_API.use("/master", Master);
+CLIENT_API.use("/emp", Emp);
 
 export default CLIENT_API;

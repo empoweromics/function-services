@@ -6,9 +6,9 @@ interface Result {
   developer: mongoose.Schema.Types.ObjectId;
   unit: mongoose.Schema.Types.ObjectId;
 }
-export interface empDocument extends mongoose.Document {
+export interface empDocument {
   inputs: object;
-  outputs: {
+  outputs?: {
     result1: Result;
     result2: Result;
     result3: Result;
@@ -47,18 +47,15 @@ const resultSchema = new Schema(
   {
     project: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "project",
-      required: true
+      ref: "project"
     },
     developer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "project",
-      required: true
+      ref: "project"
     },
     unit: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "unit",
-      required: true
+      ref: "unit"
     }
   },
   { _id: false, versionKey: false }
@@ -68,15 +65,18 @@ const outputsSchema = new Schema(
   {
     result1: {
       type: resultSchema,
-      required: true
+      required: true,
+      default: {} // @TODO::Remove it later
     },
     result2: {
       type: resultSchema,
-      required: true
+      required: true,
+      default: {} // @TODO::Remove it later
     },
     result3: {
       type: resultSchema,
-      required: true
+      required: true,
+      default: {} // @TODO::Remove it later
     }
   },
   { _id: false, versionKey: false }
@@ -90,7 +90,8 @@ const empSchema = new Schema(
     },
     outputs: {
       type: outputsSchema,
-      required: true
+      required: true,
+      default: {} // @TODO::Remove it later
     },
     active: {
       type: Boolean,
