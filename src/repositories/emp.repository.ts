@@ -13,7 +13,7 @@ export const empRepo = {
       .find(query, select, options)
       .skip(skip)
       .limit(limit)
-      .select("_id views")
+      .select("_id views inputs.clientname")
       .sort({ createdAt: -1 })
       .exec(),
 
@@ -28,5 +28,7 @@ export const empRepo = {
       .exec(),
 
   deleteOne: (id: string) => empModel.findByIdAndDelete(id).exec(),
+  deactiveOne: (id: string) =>
+    empModel.findByIdAndUpdate(id, { active: false }).exec(),
   Create: (item: empDocument | Array<empDocument>) => empModel.create(item)
 };

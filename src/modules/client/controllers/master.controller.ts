@@ -1,5 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { ExpressFunc } from "../../../types";
+import { UnitModel } from "../../../models/unit.model";
+import { unitRepo } from "../../../repositories/unit.repository";
 
 /**
  * getCategory
@@ -14,13 +16,8 @@ export const getCategory: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    return res.send([
-      "residential",
-      "medical",
-      "retail",
-      "administrative",
-      "industrial"
-    ]);
+    const data = await unitRepo.findDistinct("category");
+    return res.send(data);
   } catch (error) {
     next(error);
   }
@@ -32,14 +29,8 @@ export const getFinishingType: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    return res.send([
-      "deluxe-finishing",
-      "fully-finished",
-      "core-&-shell",
-      "semi-finished",
-      "finished-with-acs",
-      "land"
-    ]);
+    const data = await unitRepo.findDistinct("finishingType");
+    return res.send(data);
   } catch (error) {
     next(error);
   }
@@ -51,38 +42,21 @@ export const getType: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    return res.send([
-      "serviced-apartment",
-      "apartment",
-      "twin-house",
-      "penthouse",
-      "townhouse",
-      "villa",
-      "duplex",
-      "center",
-      "food-&-beverage",
-      "clinic",
-      "bank",
-      "palace",
-      "health-&-fitness",
-      "office-space",
-      "shop",
-      "show-room",
-      "supermarket",
-      "building",
-      "chalet",
-      "pharmacy",
-      "store",
-      "studio",
-      "entertainment",
-      "s-villa",
-      "lab",
-      "land",
-      "coworking-space",
-      "factory",
-      "storage",
-      "cabin"
-    ]);
+    const data = await unitRepo.findDistinct("type");
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getArea: ExpressFunc = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = await unitRepo.findDistinct("area");
+    return res.send(data);
   } catch (error) {
     next(error);
   }

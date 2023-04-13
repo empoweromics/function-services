@@ -1,6 +1,7 @@
 import express from "express";
 
 import {
+  getArea,
   getCategory,
   getFinishingType,
   getType
@@ -11,5 +12,6 @@ const router = express.Router();
 router.get("/finishing-type", getFinishingType);
 router.get("/type", getType);
 router.get("/category", getCategory);
+router.get("/area", getArea);
 
 export default router;

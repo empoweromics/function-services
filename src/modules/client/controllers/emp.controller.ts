@@ -25,7 +25,7 @@ export const getAllEmps: ExpressFunc = async (
     const skip = page * limit;
     limit = limit + skip;
 
-    const data = await empRepo.find({ user });
+    const data = await empRepo.find({ user, active: true });
     if (!data)
       return res
         .status(HttpStatus.NO_CONTENT)
@@ -100,11 +100,9 @@ export const createEmp: ExpressFunc = async (
 
 export const deleteEmp: ExpressFunc = async (req, res, next) => {
   try {
-    const data = await empRepo.deleteOne(req.params.id);
+    const data = await empRepo.deactiveOne(req.params.id);
     if (data)
-      return res
-        .status(HttpStatus.OK)
-        .json({ data, message: "Resource Deleted" });
+      return res.status(HttpStatus.OK).json({ message: "Resource Deleted" });
     return res
       .status(HttpStatus.NOT_FOUND)
       .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
