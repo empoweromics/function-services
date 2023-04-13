@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserModel } from "../../../models/user.model";
 import { HttpStatus } from "../../../config/httpCodes";
+import OpportunityModel from "../../../models/opportunity.model";
 
 /**
  * Auth data and profile balance
@@ -37,9 +38,15 @@ export const myAccount = async (
   next: NextFunction
 ) => {
   try {
-    const user = res.locals.user;
+    const user = res.locals.user._id;
+    const data = await OpportunityModel.aggregate([
+      {
+        $match: { user }
+      },
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
 
-    return res.json({ user });
+    return res.json(data);
   } catch (error) {
     next(error);
   }

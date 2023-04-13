@@ -80,3 +80,5 @@ export const OpportunityModel = mongoose.model(
   "opportunity",
   OpportunitySchema
 );
+
+export default OpportunityModel;

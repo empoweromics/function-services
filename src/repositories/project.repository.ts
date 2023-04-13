@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { ProjectModel } from "../models/project.model";
 
 export const findProjectDetail = (id: string) =>
@@ -17,7 +18,7 @@ export const findProjectDetail = (id: string) =>
     }
   );
 
-export const findSimilarDevProjects = (developer: string | undefined) =>
+export const findSimilarDevProjects = (developer: ObjectId | undefined) =>
   ProjectModel.find(
     { developer },
     {
