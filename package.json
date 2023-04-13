@@ -15,14 +15,15 @@
   },
   "main": "build/index.js",
   "dependencies": {
-    "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.18.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
     "mongodb": "^4.8.0",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

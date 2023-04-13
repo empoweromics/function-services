@@ -23,4 +23,3 @@ const DeveloperSchema = new Schema(
 );
 
 export const DeveloperModel = mongoose.model("developer", DeveloperSchema);
-export default DeveloperModel;
