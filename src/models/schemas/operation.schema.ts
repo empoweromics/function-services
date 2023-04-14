@@ -32,3 +32,12 @@ export const empSchemaValidation = z.object({
     budget: z.number()
   })
 });
+
+export const academySchemaValidation = z.object({
+  body: z.object({
+    title: z.string(),
+    description: z.string(),
+    url: z.string().url(),
+    level: z.string()
+  })
+});

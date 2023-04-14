@@ -72,10 +72,6 @@ export const addOpportunity = async (
   next: NextFunction
 ) => {
   try {
-    const { client, project, budget } = req.body;
-    if (!client || !project || !budget) {
-      return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
-    }
     const user = res.locals.user._id;
     const data = await opportunityRepo.Create({
       user,

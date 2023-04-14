@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+export interface academyDocument {
+  title: string;
+  description?: string;
+  url: string;
+  level?: string;
+}
+
 const AcademySchema = new mongoose.Schema(
   {
     title: {
