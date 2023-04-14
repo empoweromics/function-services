@@ -6,8 +6,17 @@ interface Result {
   developer: mongoose.Schema.Types.ObjectId;
   unit: mongoose.Schema.Types.ObjectId;
 }
+export interface empInputs {
+  clientname: string;
+  clientphone: string;
+  category: string;
+  area: string;
+  type: string;
+  sqm: number;
+  budget: number;
+}
 export interface empDocument {
-  inputs: object;
+  inputs: empInputs;
   outputs?: {
     result1: Result;
     result2: Result;
@@ -22,19 +31,28 @@ const inputSchema = new Schema(
   {
     clientname: {
       type: String,
-      require: true
+      required: true
     },
-    clientphone: String,
+    clientphone: {
+      type: String,
+      required: true
+    },
     category: {
       type: String,
-      require: true
+      required: true
     },
     area: {
       type: String,
-      require: true
+      required: true
     },
-    type: String,
-    sqm: String,
+    type: {
+      type: String,
+      required: true
+    },
+    sqm: {
+      type: Number,
+      required: true
+    },
     budget: {
       type: Number,
       required: true
@@ -51,7 +69,7 @@ const resultSchema = new Schema(
     },
     developer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "project"
+      ref: "developer"
     },
     unit: {
       type: mongoose.Schema.Types.ObjectId,

@@ -69,22 +69,9 @@ export const createEmp: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    const { clientname, clientphone, category, area, type, sqm, budget } =
-      req.body;
-    if (
-      !clientname ||
-      !clientphone ||
-      !category ||
-      !area ||
-      !type ||
-      !sqm ||
-      !budget
-    ) {
-      return res.status(409).json({ message: ErrorMessage.INVALID_PARAMS });
-    }
     const user = res.locals.user._id;
     const data = await empRepo.Create({
-      inputs: { clientname, clientphone, category, area, type, sqm, budget },
+      inputs: req.body,
       active: true,
       views: 0,
       user
@@ -92,7 +79,8 @@ export const createEmp: ExpressFunc = async (
 
     if (!data)
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
-    return res.status(201).json({ data });
+    await empRepo.generateOutputs(data._id, data.inputs);
+    return res.status(201).json(data.inputs);
   } catch (error) {
     next(error);
   }
