@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { ExpressFunc } from "../../../types";
 import { unitRepo } from "../../../repositories/unit.repository";
+import { academyRepo } from "../../../repositories/academy.repository";
 
 /**
  * getCategory
@@ -56,6 +57,24 @@ export const getArea: ExpressFunc = async (
   try {
     const data = await unitRepo.findDistinct("area");
     return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAcademy: ExpressFunc = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const page = req.query.page ? parseInt(req.query.page.toString()) - 1 : 0;
+    let limit = 20;
+    const skip = page * limit;
+    limit = limit + skip;
+
+    const data = await academyRepo.find({}, limit, skip);
+    return res.send({ data, length: data.length });
   } catch (error) {
     next(error);
   }
