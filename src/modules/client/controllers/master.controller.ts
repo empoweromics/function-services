@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
 import { ExpressFunc } from "../../../types";
-import { UnitModel } from "../../../models/unit.model";
 import { unitRepo } from "../../../repositories/unit.repository";
 
 /**

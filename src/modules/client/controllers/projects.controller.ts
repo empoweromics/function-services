@@ -4,7 +4,7 @@ import {
   findProjectDetail,
   findSimilarDevProjects
 } from "../../../repositories/project.repository";
-import { getPricePerMeterGroupByType } from "../../../repositories/unit.repository";
+import { unitRepo } from "../../../repositories/unit.repository";
 
 /**
  * function to retrive all project's Polygons
@@ -69,7 +69,7 @@ export const availableUnits = async (
 ) => {
   const projectId = req.params.id;
   try {
-    const units = await getPricePerMeterGroupByType(projectId);
+    const units = await unitRepo.getPricePerMeterGroupByType(projectId);
     if (!units) {
       return res.status(204).json({ message: "No content" });
     }

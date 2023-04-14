@@ -1,4 +1,4 @@
-import type { ProjectionType, QueryOptions } from "mongoose";
+import type { ProjectionType, QueryOptions, FilterQuery } from "mongoose";
 
 import {
   OpportunityDocument,
@@ -17,5 +17,13 @@ export const opportunityRepo = {
 
   deleteOne: (id: string) => OpportunityModel.findByIdAndDelete(id).exec(),
   Create: (item: OpportunityDocument | Array<OpportunityDocument>) =>
-    OpportunityModel.create(item)
+    OpportunityModel.create(item),
+
+  getOpportunitiesPaginated: (
+    limit: number,
+    skip: number,
+    filter: FilterQuery<OpportunityDocument>
+  ) => {
+    return OpportunityModel.find(filter).limit(limit).skip(skip).lean().exec();
+  }
 };

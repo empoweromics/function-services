@@ -64,7 +64,7 @@ const OpportunitySchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["pendding", "deal", "closed"],
+      enum: ["pendding", "success", "failure"],
       default: "pendding"
     },
     notes: String,
@@ -80,5 +80,3 @@ export const OpportunityModel = mongoose.model(
   "opportunity",
   OpportunitySchema
 );
-
-export default OpportunityModel;

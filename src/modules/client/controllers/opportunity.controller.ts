@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
 import { ErrorMessage } from "../../../config/errors";
-import { OpportunityModel } from "../../../models/opportunity.model";
 import { HttpStatus } from "../../../config/httpCodes";
 import { opportunityRepo } from "../../../repositories/opportunity.repository";
 import { ExpressFunc } from "../../../types";
@@ -26,9 +25,10 @@ export const getAllOpportunities = async (
     const skip = page * limit;
     limit = limit + skip;
 
-    const data = await OpportunityModel.find({ user, active: true })
-      .limit(limit)
-      .skip(skip);
+    const data = await opportunityRepo.getOpportunitiesPaginated(limit, skip, {
+      user,
+      active: true
+    });
     if (!data)
       return res
         .status(HttpStatus.NO_CONTENT)
