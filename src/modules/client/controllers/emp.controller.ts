@@ -18,13 +18,6 @@ export const getAllEmps: ExpressFunc = async (
 ) => {
   try {
     const user = res.locals.user._id;
-    const page = req.headers.page
-      ? parseInt(req.headers.page.toString()) - 1
-      : 0;
-    let limit = 10;
-    const skip = page * limit;
-    limit = limit + skip;
-
     const data = await empRepo.find({ user, active: true });
     if (!data)
       return res

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 // export interface Provider {
 //   name: "google";
@@ -9,6 +9,35 @@ import mongoose from "mongoose";
 //     phoneNumber: string;
 //   };
 // }
+
+const AccessLogsSchema = new Schema({
+  browser: String,
+  IP: String,
+  location: String,
+  date: Date
+});
+const notificationsSchema = new Schema(
+  {
+    widthdraw: {
+      type: Boolean,
+      default: true
+    },
+    weeklyReport: {
+      type: Boolean,
+      default: true
+    },
+    // Get a message when a Opportunity fails
+    failedOpportunity: {
+      type: Boolean,
+      default: true
+    },
+    opportunityStatusUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
+  { _id: false, versionKey: false }
+);
 
 const UserSchema = new mongoose.Schema(
   {
@@ -26,9 +55,20 @@ const UserSchema = new mongoose.Schema(
       trim: true
     },
     phone: String,
+    dateOfbirth: String,
+    address: String,
     photoUrl: String,
     fcm: String,
-    lastLoginAt: String,
+    status: {
+      type: String,
+      enum: ["active", "pendding", "blocked"],
+      default: "pendding"
+    },
+    language: {
+      type: String,
+      enum: ["English", "Arabic"],
+      default: "English"
+    },
     providerUserInfo: {
       type: Object
     },
@@ -36,7 +76,9 @@ const UserSchema = new mongoose.Schema(
       type: Object
     },
     emailVerified: Boolean,
-    phoneVerified: Boolean
+    phoneVerified: Boolean,
+    notifications: notificationsSchema,
+    access: [AccessLogsSchema]
   },
   { timestamps: true }
 );

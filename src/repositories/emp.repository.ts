@@ -5,15 +5,11 @@ import { ObjectId } from "mongodb";
 export const empRepo = {
   find: (
     query: _FilterQuery<empDocument>,
-    limit = 10,
-    skip = 0,
     options: QueryOptions<empDocument> = { lean: true },
     select: ProjectionType<empDocument> = {}
   ) =>
     empModel
       .find(query, select, options)
-      .skip(skip)
-      .limit(limit)
       .select("_id views inputs.clientname")
       .sort({ createdAt: -1 })
       .exec(),

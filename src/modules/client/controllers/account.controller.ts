@@ -94,7 +94,35 @@ export const updateProfile = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    const Id = res.locals.user._id;
+    const {
+      displayName,
+      photoUrl,
+      notifications,
+      language,
+      fcm,
+      phone,
+      dateOfbirth,
+      address
+    } = req.body;
+
+    const data = await UserModel.findByIdAndUpdate(
+      Id,
+      {
+        displayName,
+        photoUrl,
+        notifications,
+        language,
+        fcm,
+        phone,
+        dateOfbirth,
+        address
+      },
+      {
+        new: true
+      }
+    ).lean();
+    return res.json(data);
   } catch (error) {
     next(error);
   }
