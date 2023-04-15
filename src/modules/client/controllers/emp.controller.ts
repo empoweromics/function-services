@@ -43,7 +43,8 @@ export const getEmpDetails: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({});
+    const data = await empRepo.findById(req.params.id);
+    return res.json(data);
   } catch (error) {
     next(error);
   }

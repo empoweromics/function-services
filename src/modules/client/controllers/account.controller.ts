@@ -3,6 +3,7 @@ import { UserModel } from "../../../models/user.model";
 import { HttpStatus } from "../../../config/httpCodes";
 import { AcademyModel } from "../../../models/academy.model";
 import { OpportunityModel } from "../../../models/opportunity.model";
+import { DeveloperModel } from "../../../models/developer.model";
 
 /**
  * Auth data and profile balance
@@ -122,6 +123,25 @@ export const updateProfile = async (
         new: true
       }
     ).lean();
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const topDevelopers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = await DeveloperModel.find({
+      active: true,
+      city: req.query.city
+    })
+      .select("name website rating city logo")
+      .sort({ rating: -1 })
+      .limit(15);
     return res.json(data);
   } catch (error) {
     next(error);

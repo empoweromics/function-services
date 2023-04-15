@@ -81,21 +81,9 @@ const resultSchema = new Schema(
 
 const outputsSchema = new Schema(
   {
-    result1: {
-      type: resultSchema,
-      required: true,
-      default: {} // @TODO::Remove it later
-    },
-    result2: {
-      type: resultSchema,
-      required: true,
-      default: {} // @TODO::Remove it later
-    },
-    result3: {
-      type: resultSchema,
-      required: true,
-      default: {} // @TODO::Remove it later
-    }
+    result1: resultSchema,
+    result2: resultSchema,
+    result3: resultSchema
   },
   { _id: false, versionKey: false }
 );
@@ -117,6 +105,7 @@ const empSchema = new Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true
     },
     views: {

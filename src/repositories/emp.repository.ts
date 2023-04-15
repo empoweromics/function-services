@@ -21,7 +21,28 @@ export const empRepo = {
   ) =>
     empModel
       .findById(id, select, options)
-      .populate("outputs", "name i18n area units")
+      .populate("user", "displayName phone")
+      // result1
+      .populate("outputs.result1.project", "name logo i18n attachments state")
+      .populate("outputs.result1.developer", "name logo i18n attachments state")
+      .populate(
+        "outputs.result1.unit",
+        "category type finishingType priceBase spaceBuildUp paymentYears estDelivery"
+      )
+      // result2
+      .populate("outputs.result2.project", "name logo i18n attachments state")
+      .populate("outputs.result2.developer", "name logo i18n attachments state")
+      .populate(
+        "outputs.result2.unit",
+        "category type finishingType priceBase spaceBuildUp paymentYears estDelivery"
+      )
+      // result3
+      .populate("outputs.result3.project", "name logo i18n attachments state")
+      .populate("outputs.result3.developer", "name logo i18n attachments state")
+      .populate(
+        "outputs.result3.unit",
+        "category type finishingType priceBase spaceBuildUp paymentYears estDelivery"
+      )
       .exec(),
 
   deleteOne: (id: string) => empModel.findByIdAndDelete(id).exec(),
