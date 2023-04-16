@@ -9,6 +9,11 @@ import { opportunitySchemaValidation } from "../../../models/schemas/operation.s
 const router = express.Router();
 
 router.get("/", getAllOpportunities);
-router.post("/submit", validate(opportunitySchemaValidation), addOpportunity);
+router.post(
+  "/submit",
+
+  [validate(opportunitySchemaValidation)],
+  addOpportunity
+);
 
 export default router;

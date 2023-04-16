@@ -5,9 +5,10 @@ import {
   getAllPolygonsGeoJsonShaped,
   projectDetails
 } from "../controllers/projects.controller";
+import { Log } from "../../../middlewares";
 
 const router = express.Router();
-router.get("/search", advancedTextSearch);
+router.get("/search", Log, advancedTextSearch);
 
 router.get("/polygons", getAllPolygonsGeoJsonShaped);
 router.get("/:id", projectDetails);

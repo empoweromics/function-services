@@ -15,7 +15,7 @@ export interface LoggerDocument
   extends Omit<Logger, "userId">,
     mongoose.Document {
   _id: string;
-  userId: mongoose.Types.ObjectId;
+  userId?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,8 +24,7 @@ const LoggerSchema = new mongoose.Schema<LoggerDocument>(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-      required: true
+      ref: "user"
     },
     type: {
       type: String,
