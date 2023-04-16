@@ -45,6 +45,6 @@ const ProjectSchema = new Schema(
   { timestamps: true }
 );
 
-export const ProjectModel = mongoose.model("project", ProjectSchema);
+ProjectSchema.index({ name: "text", area: "text" });
 
-export default ProjectModel;
+export const ProjectModel = mongoose.model("project", ProjectSchema);

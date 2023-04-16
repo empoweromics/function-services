@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { allPolygonsGeoJsonShaped } from "../../../repositories/polygon.repository";
-import {
-  findProjectDetail,
-  findSimilarDevProjects
-} from "../../../repositories/project.repository";
+
 import { unitRepo } from "../../../repositories/unit.repository";
+import { projectRepo } from "../../../repositories/project.repository";
 
 /**
  * function to retrive all project's Polygons
@@ -43,11 +41,13 @@ export const projectDetails = async (
 ) => {
   const id = req.params.id;
   try {
-    const project = await findProjectDetail(id);
+    const project = await projectRepo.findProjectDetail(id);
     if (!project) {
       return res.status(204).json({ message: "No content" });
     }
-    const developer_projects = await findSimilarDevProjects(project.developer);
+    const developer_projects = await projectRepo.findSimilarDevProjects(
+      project.developer
+    );
 
     return res.json({ project, developer_projects });
   } catch (error) {
@@ -86,13 +86,18 @@ export const availableUnits = async (
  * @param next
  * @returns
  */
-export const advancedSearch = async (
+export const advancedTextSearch = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    const searchText = String(req.query.text);
+    if (searchText) {
+      const data = await projectRepo.searchByTextProjects(searchText);
+      return res.json(data);
+    }
+    res.send([]);
   } catch (error) {
     next(error);
   }

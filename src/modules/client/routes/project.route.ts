@@ -1,14 +1,16 @@
 import express from "express";
 import {
+  advancedTextSearch,
   availableUnits,
   getAllPolygonsGeoJsonShaped,
   projectDetails
 } from "../controllers/projects.controller";
 
 const router = express.Router();
+router.get("/search", advancedTextSearch);
 
 router.get("/polygons", getAllPolygonsGeoJsonShaped);
-router.get("/project/:id", projectDetails);
-router.get("/project/:id/units", availableUnits);
+router.get("/:id", projectDetails);
+router.get("/:id/units", availableUnits);
 
 export default router;
