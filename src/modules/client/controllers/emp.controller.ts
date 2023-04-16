@@ -73,7 +73,7 @@ export const createEmp: ExpressFunc = async (
 
     if (!data)
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
-    await empRepo.generateOutputs(data._id, data.inputs);
+    empRepo.generateOutputs(data._id, data.inputs);
     return res.status(201).json(data.inputs);
   } catch (error) {
     next(error);

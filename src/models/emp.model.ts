@@ -61,6 +61,16 @@ const inputSchema = new Schema(
   { _id: false, versionKey: false }
 );
 
+const unitSchema = new Schema({
+  category: String,
+  type: String,
+  finishingType: String,
+  spaceBuildUp: Number,
+  priceBase: Number,
+  paymentYears: Number,
+  estDelivery: [Number]
+});
+
 const resultSchema = new Schema(
   {
     project: {
@@ -71,10 +81,7 @@ const resultSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "developer"
     },
-    unit: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "unit"
-    }
+    unit: unitSchema
   },
   { _id: false, versionKey: false }
 );

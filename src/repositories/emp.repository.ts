@@ -26,24 +26,15 @@ export const empRepo = {
       // result1
       .populate("outputs.result1.project", "name logo i18n attachments state")
       .populate("outputs.result1.developer", "name logo i18n attachments state")
-      .populate(
-        "outputs.result1.unit",
-        "category type finishingType priceBase spaceBuildUp paymentYears estDelivery"
-      )
+
       // result2
       .populate("outputs.result2.project", "name logo i18n attachments state")
       .populate("outputs.result2.developer", "name logo i18n attachments state")
-      .populate(
-        "outputs.result2.unit",
-        "category type finishingType priceBase spaceBuildUp paymentYears estDelivery"
-      )
+
       // result3
       .populate("outputs.result3.project", "name logo i18n attachments state")
       .populate("outputs.result3.developer", "name logo i18n attachments state")
-      .populate(
-        "outputs.result3.unit",
-        "category type finishingType priceBase spaceBuildUp paymentYears estDelivery"
-      )
+
       .exec(),
 
   deleteOne: (id: string) => empModel.findByIdAndDelete(id).exec(),
@@ -83,17 +74,17 @@ export const empRepo = {
           result1: {
             project: res1.project,
             developer: res1.developer,
-            unit: res1._id
+            unit: res1
           },
           result2: {
             project: res2.project,
             developer: res2.developer,
-            unit: res2._id
+            unit: res2
           },
           result3: {
             project: res3.project,
             developer: res3.developer,
-            unit: res3._id
+            unit: res3
           }
         }
       })
