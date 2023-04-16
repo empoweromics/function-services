@@ -1,6 +1,7 @@
 import type { ProjectionType, QueryOptions, _FilterQuery } from "mongoose";
 import { empDocument, empInputs, empModel } from "../models/emp.model";
 import { ObjectId } from "mongodb";
+import { UnitModel } from "../models/unit.model";
 
 export const empRepo = {
   find: (
@@ -50,25 +51,49 @@ export const empRepo = {
     empModel.findByIdAndUpdate(id, { active: false }).exec(),
   Create: (item: empDocument | Array<empDocument>) => empModel.create(item),
 
-  generateOutputs: (id: ObjectId, item: empInputs) => {
-    console.log(item);
+  /**
+   *
+   *
+   * @param id
+   * @param inputs
+   * @returns
+   */
+  generateOutputs: async (id: ObjectId, inputs: empInputs) => {
+    const { category, area, type /*sqm, budget*/ } = inputs;
+    // const budgetRange = { min: budget - 1000 * 100, max: budget + 1000 * 100 };
+    // const sqmRange = {
+    //   min: sqm - (sqm * 20) / 100,
+    //   max: budget + (sqm * 20) / 100
+    // };
+    const units = await UnitModel.find({
+      category,
+      area,
+      type
+    }).sort({
+      priceBase: 1
+    });
+
+    const res1 = units[Math.floor(Math.random() * units.length)];
+    const res2 = units[Math.floor(Math.random() * units.length)];
+    const res3 = units[Math.floor(Math.random() * units.length)];
+
     return empModel
       .findByIdAndUpdate(id, {
         outputs: {
           result1: {
-            project: new ObjectId("6435f3198ee697e6819ea871"),
-            developer: new ObjectId("6435d5ed91155b33caeab147"),
-            unit: new ObjectId("6435f355533d4ae1fe613015")
+            project: res1.project,
+            developer: res1.developer,
+            unit: res1._id
           },
           result2: {
-            project: new ObjectId("6435f3198ee697e6819ea5d4"),
-            developer: new ObjectId("6435d5ed91155b33caeab2c7"),
-            unit: new ObjectId("6435f355533d4ae1fe61309f")
+            project: res2.project,
+            developer: res2.developer,
+            unit: res2._id
           },
           result3: {
-            project: new ObjectId("6435f355533d4ae1fe613062"),
-            developer: new ObjectId("6435d5ed91155b33caeab15c"),
-            unit: new ObjectId("6435f355533d4ae1fe613025")
+            project: res3.project,
+            developer: res3.developer,
+            unit: res3._id
           }
         }
       })
