@@ -74,7 +74,7 @@ export const getAcademy: ExpressFunc = async (
     limit = limit + skip;
 
     const data = await academyRepo.find({}, limit, skip);
-    return res.send({ data, length: data.length });
+    return res.send(data);
   } catch (error) {
     next(error);
   }
