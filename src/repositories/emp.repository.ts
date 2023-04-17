@@ -59,13 +59,13 @@ export const empRepo = {
    * @returns
    */
   generateOutputs: async (id: ObjectId, inputs: empInputs) => {
-    const { category, area, type, sqm, budget } = inputs;
+    const { category, area, type /* sqm, budget  */ } = inputs;
     // const budgetRange = { min: budget - 1000 * 100, max: budget + 1000 * 100 };
     // const sqmRange = {
     //   min: sqm - (sqm * 20) / 100,
     //   max: budget + (sqm * 20) / 100
     // };
-    const q_pricePerMeter = budget / sqm;
+    // const q_pricePerMeter = budget / sqm;
     const units = await UnitModel.find({
       category,
       area,
@@ -75,14 +75,15 @@ export const empRepo = {
     });
 
     const res1 = units[0];
+    const res2 = units[Math.floor(Math.random() * units.length)];
     const res3 = units[Math.floor(Math.random() * units.length)];
-    let res2 = {};
-    units.forEach(element => {
-      if (Number(element.pricePerMeter) <= q_pricePerMeter) {
-        res2 = element;
-      }
-    });
-    if (!res2) res2 = units[Math.floor(Math.random() * units.length)];
+    // let res2 = {};
+    // units.forEach(element => {
+    //   if (Number(element.pricePerMeter) <= q_pricePerMeter) {
+    //     res2 = element;
+    //   }
+    // });
+    // if (!res2) res2 = units[Math.floor(Math.random() * units.length)];
 
     return empModel
       .findByIdAndUpdate(id, {
@@ -92,11 +93,11 @@ export const empRepo = {
             developer: res1.developer,
             unit: res1
           },
-          // result2: {
-          //   project: res2.project,
-          //   developer: res2.developer,
-          //   unit: res2
-          // },
+          result2: {
+            project: res2.project,
+            developer: res2.developer,
+            unit: res2
+          },
           result3: {
             project: res3.project,
             developer: res3.developer,

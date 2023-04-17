@@ -63,17 +63,17 @@ export const createEmp: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    // const user = res.locals.user._id;
-    // const data = await empRepo.Create({
-    //   inputs: req.body,
-    //   active: true,
-    //   views: 0,
-    //   user
-    // });
+    const user = res.locals.user._id;
+    const data = await empRepo.Create({
+      inputs: req.body,
+      active: true,
+      views: 0,
+      user
+    });
 
-    // if (!data)
-    //   return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
-    const data = await empRepo.generateOutputs(req.body);
+    if (!data)
+      return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+    empRepo.generateOutputs(data._id, req.body);
     return res.status(201).json(data);
   } catch (error) {
     next(error);
