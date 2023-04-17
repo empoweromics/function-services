@@ -141,7 +141,7 @@ export const topDevelopers = async (
     })
       .select("name website rating city logo")
       .sort({ rating: -1 })
-      .limit(15);
+      .limit(9);
     return res.json(data);
   } catch (error) {
     next(error);

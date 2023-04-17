@@ -16,7 +16,7 @@ export const allPolygonsGeoJsonShaped = () =>
         category: "$category",
         area: "$area",
         acres: "$acres",
-        units: "$units.totla"
+        units: "$units.total"
       }
     }
   );

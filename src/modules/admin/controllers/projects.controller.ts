@@ -82,7 +82,7 @@ export const calculateProjectUnitAvilability = async (
           { _id: item._id },
           {
             units: {
-              totla: units.length,
+              total: units.length,
               start: units[0],
               avg: units[Math.round((units.length - 1) / 2)]
             }
