@@ -14,21 +14,19 @@ export const projectRepo = {
         rating: 1,
         attachments: 1,
         units: 1,
-        developer: 1,
-        developer_name: 1
+        developer: 1
       }
-    ),
+    ).populate("developer", "name logo"),
 
   findSimilarDevProjects: (developer: ObjectId | undefined) =>
     ProjectModel.find(
       { developer },
       {
         name: 1,
-        developer_name: 1,
         logo: 1,
         rating: 1
       }
-    ).limit(5),
+    ).limit(6),
 
   searchByTextProjects: (searchString: string) =>
     ProjectModel.find(

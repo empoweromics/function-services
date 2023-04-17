@@ -1,15 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-// export interface Provider {
-//   name: "google";
-//   providerId: "google.com";
-//   uid: string;
-//   info: {
-//     photoURL: string;
-//     phoneNumber: string;
-//   };
-// }
-
 const AccessLogsSchema = new Schema({
   browser: String,
   IP: String,
@@ -54,9 +44,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    phone: String,
-    dateOfbirth: String,
-    address: String,
+    phone: { type: String, default: "" },
+    dateOfbirth: { type: String, default: "" },
+    address: { type: String, default: "" },
     photoUrl: String,
     fcm: String,
     status: {
@@ -77,7 +67,15 @@ const UserSchema = new mongoose.Schema(
     },
     emailVerified: Boolean,
     phoneVerified: Boolean,
-    notifications: notificationsSchema,
+    notifications: {
+      type: notificationsSchema,
+      default: {
+        widthdraw: true,
+        weeklyReport: false,
+        failedOpportunity: true,
+        opportunityStatusUpdate: true
+      }
+    },
     access: [AccessLogsSchema]
   },
   { timestamps: true }

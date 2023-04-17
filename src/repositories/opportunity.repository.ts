@@ -24,6 +24,11 @@ export const opportunityRepo = {
     skip: number,
     filter: FilterQuery<OpportunityDocument>
   ) => {
-    return OpportunityModel.find(filter).limit(limit).skip(skip).lean().exec();
+    return OpportunityModel.find(filter)
+      .populate("project", "name logo developer")
+      .limit(limit)
+      .skip(skip)
+      .lean()
+      .exec();
   }
 };

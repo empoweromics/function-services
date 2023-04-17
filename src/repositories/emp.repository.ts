@@ -44,28 +44,22 @@ export const empRepo = {
 
   /**
    *
-   * {
-    "clientname" : "Dr. Omar Sayed",
-    "clientphone" : "+97546212110",
-    "category" : "Residential",
-    "area" : "new cairo",
-    "type" : "Serviced Apartment",
-    "sqm" : 200,
-    "budget" : 1000000
-    }
-   *
    * @param id
    * @param inputs
    * @returns
    */
   generateOutputs: async (id: ObjectId, inputs: empInputs) => {
-    const { category, area, type /* sqm, budget  */ } = inputs;
-    // const budgetRange = { min: budget - 1000 * 100, max: budget + 1000 * 100 };
-    // const sqmRange = {
-    //   min: sqm - (sqm * 20) / 100,
-    //   max: budget + (sqm * 20) / 100
-    // };
+    const { category, area, type, sqm, budget } = inputs;
+    const budgetRange = {
+      min: budget - budget * 0.18,
+      max: budget + budget * 0.25
+    };
+    const sqmRange = {
+      min: sqm - sqm * 0.2,
+      max: budget + sqm * 0.2
+    };
     // const q_pricePerMeter = budget / sqm;
+
     const units = await UnitModel.find({
       category,
       area,
@@ -74,34 +68,46 @@ export const empRepo = {
       pricePerMeter: -1
     });
 
-    const res1 = units[0];
-    const res2 = units[Math.floor(Math.random() * units.length)];
-    const res3 = units[Math.floor(Math.random() * units.length)];
-    // let res2 = {};
-    // units.forEach(element => {
-    //   if (Number(element.pricePerMeter) <= q_pricePerMeter) {
-    //     res2 = element;
-    //   }
-    // });
-    // if (!res2) res2 = units[Math.floor(Math.random() * units.length)];
+    const outputs = {
+      res1: units[0], // cheapest sqm / pricePerMeter
+      res2: units[Math.floor(Math.random() * units.length)],
+      res3: units[Math.floor(Math.random() * units.length)]
+    };
+
+    for (let index = 1; index < units.length; index++) {
+      const unit = units[index];
+      if (
+        Number(unit.priceBase) >= budgetRange.min &&
+        Number(unit.priceBase) <= budgetRange.max
+      ) {
+        outputs.res2 = unit;
+      }
+      if (
+        Number(unit.spaceBuildUp) >= sqmRange.min &&
+        Number(unit.spaceBuildUp) <= sqmRange.max &&
+        unit._id !== outputs.res2._id
+      ) {
+        outputs.res3 = unit;
+      }
+    }
 
     return empModel
       .findByIdAndUpdate(id, {
         outputs: {
           result1: {
-            project: res1.project,
-            developer: res1.developer,
-            unit: res1
+            project: outputs.res1.project,
+            developer: outputs.res1.developer,
+            unit: outputs.res1
           },
           result2: {
-            project: res2.project,
-            developer: res2.developer,
-            unit: res2
+            project: outputs.res2.project,
+            developer: outputs.res2.developer,
+            unit: outputs.res2
           },
           result3: {
-            project: res3.project,
-            developer: res3.developer,
-            unit: res3
+            project: outputs.res3.project,
+            developer: outputs.res3.developer,
+            unit: outputs.res3
           }
         }
       })
