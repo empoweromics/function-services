@@ -11,7 +11,7 @@ export const empRepo = {
   ) =>
     empModel
       .find(query, select, options)
-      .select("_id views inputs.clientname")
+      .select("_id views inputs.clientname createdAt")
       .sort({ createdAt: -1 })
       .exec(),
 

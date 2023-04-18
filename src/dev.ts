@@ -8,7 +8,7 @@ import CLIENT_API from "./modules/client/routes";
 import { connectToDatabase } from "./config/db";
 
 connectToDatabase();
-const port = process.env.PORT ?? 5000;
+const port = process.env.PORT ?? 5001;
 /**
  * run services
  */
