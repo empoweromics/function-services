@@ -1,7 +1,7 @@
 import type { ProjectionType, QueryOptions, _FilterQuery } from "mongoose";
 import { empDocument, empInputs, empModel } from "../models/emp.model";
-import { ObjectId } from "mongodb";
 import { UnitModel } from "../models/unit.model";
+import mongoose from "mongoose";
 
 export const empRepo = {
   find: (
@@ -48,7 +48,10 @@ export const empRepo = {
    * @param inputs
    * @returns
    */
-  generateOutputs: async (id: ObjectId, inputs: empInputs) => {
+  generateOutputs: async (
+    id: mongoose.Schema.Types.ObjectId,
+    inputs: empInputs
+  ) => {
     const { category, area, type, sqm, budget } = inputs;
     const budgetRange = {
       min: budget - budget * 0.18,

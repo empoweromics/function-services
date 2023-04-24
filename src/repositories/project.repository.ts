@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import { ProjectModel } from "../models/project.model";
 
 export const projectRepo = {
@@ -18,7 +18,9 @@ export const projectRepo = {
       }
     ).populate("developer", "name logo"),
 
-  findSimilarDevProjects: (developer: ObjectId | undefined) =>
+  findSimilarDevProjects: (
+    developer: mongoose.Schema.Types.ObjectId | undefined
+  ) =>
     ProjectModel.find(
       { developer },
       {
