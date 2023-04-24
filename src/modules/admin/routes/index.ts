@@ -13,5 +13,6 @@ ADMIN_API.use("/dashboard", Dashboard);
 ADMIN_API.use("/account", Account);
 ADMIN_API.use("/project", Project);
 ADMIN_API.use("/academy", Academy);
+ADMIN_API.use("/test", (req, res) => res.send("CICD / github action"));
 
 export default ADMIN_API;

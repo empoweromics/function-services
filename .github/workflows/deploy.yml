@@ -1,0 +1,58 @@
+name: Deploy
+
+# Controls when the workflow will run
+"on":
+  # triggers the workflow whenever a push is made to the main branch
+  push:
+    branches:
+      - main
+
+jobs:
+  # this workfloe has only one job
+  deploy_to_production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+        # Setup nodejs
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 18.x
+      # this install the dependencies specified in your package.json file into the current workflow
+      - name: install dependencies
+        # navigates to your functions folder and install the dependencies
+        run: npm ci
+
+      - name: Build App
+        run: npm run build
+
+      - name: Authenticate to GCP Production
+        id: auth-production
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: ${{ secrets.SERVICE_ACCOUNT }}
+
+      - name: Make envfile
+        run: |
+          cat <<EOF > .env
+          JWT_SECRET="$JWT_SECRET"
+          MONGO_DB="$MONGO_DB"
+          FB_APP_SERVICE_ACCOUNT='$FB_APP_SERVICE_ACCOUNT'
+          EOF
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MONGO_DB: ${{ secrets.MONGO_DB }}
+          FB_APP_SERVICE_ACCOUNT: ${{ secrets.FB_APP_SERVICE_ACCOUNT }}
+
+      - name: "install firebase-tools"
+        env:
+          NPM_CONFIG_PREFIX: "~/.npm-global"
+        run: |
+          npm install -g firebase-tools@11.19
+
+      - id: "deploy"
+        name: "Deploy to prod"
+        run: npm run deploy || exit 1
