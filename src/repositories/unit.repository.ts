@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { UnitModel } from "../models/unit.model";
+import mongoose, { _FilterQuery } from "mongoose";
+import { UnitDocument, UnitModel } from "../models/unit.model";
 
 export const unitRepo = {
   getPricePerMeter: (projectId: string) =>
@@ -11,7 +11,8 @@ export const unitRepo = {
     }),
   deleteOne: (id: string) => UnitModel.findByIdAndDelete(id).exec(),
 
-  findDistinct: (field: string) => UnitModel.find().distinct(field).exec(),
+  findDistinct: (field: string, filter?: _FilterQuery<UnitDocument>) =>
+    UnitModel.find().distinct(field, filter).exec(),
 
   getPricePerMeterGroupByType: (projectId: string) =>
     UnitModel.aggregate([

@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { ExpressFunc } from "../../../types";
 import { unitRepo } from "../../../repositories/unit.repository";
 import { academyRepo } from "../../../repositories/academy.repository";
+import { ErrorMessage } from "../../../config/errors";
 
 /**
  * getCategory
@@ -16,7 +17,9 @@ export const getCategory: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    const data = await unitRepo.findDistinct("category");
+    const { area } = req.query;
+    if (!area) res.status(400).send(ErrorMessage.INVALID_PARAMS);
+    const data = await unitRepo.findDistinct("category", { area });
     return res.send(data);
   } catch (error) {
     next(error);
@@ -42,7 +45,9 @@ export const getType: ExpressFunc = async (
   next: NextFunction
 ) => {
   try {
-    const data = await unitRepo.findDistinct("type");
+    const { category, area } = req.query;
+    if (!area || !category) res.status(400).send(ErrorMessage.INVALID_PARAMS);
+    const data = await unitRepo.findDistinct("type", { category, area });
     return res.send(data);
   } catch (error) {
     next(error);

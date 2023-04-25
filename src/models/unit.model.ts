@@ -1,6 +1,22 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface Unit {
+  category?: string;
+  type?: string;
+  area?: string;
+  finishingType?: string;
+  priceBase?: number;
+  spaceBuildUp?: number;
+  paymentYears?: number;
+  estDelivery?: [number];
+  active?: boolean;
+}
+
+export interface UnitDocument extends Unit, mongoose.Document {
+  createdAt: Date;
+  updatedAt: Date;
+}
 const UnitSchema = new Schema(
   {
     category: {
