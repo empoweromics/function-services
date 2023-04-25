@@ -28,8 +28,10 @@ export const empSchemaValidation = z.object({
     category: z.string(),
     area: z.string(),
     type: z.string(),
-    sqm: z.number(),
-    budget: z.number()
+    budget: z.object({
+      min: z.number(),
+      max: z.number()
+    })
   })
 });
 

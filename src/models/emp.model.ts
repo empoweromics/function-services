@@ -6,14 +6,17 @@ interface Result {
   developer: mongoose.Schema.Types.ObjectId;
   unit: mongoose.Schema.Types.ObjectId;
 }
+interface Range {
+  min: number;
+  max: number;
+}
 export interface empInputs {
   clientname: string;
   clientphone: string;
   category: string;
   area: string;
   type: string;
-  sqm: number;
-  budget: number;
+  budget: Range;
 }
 export interface empDocument {
   inputs: empInputs;

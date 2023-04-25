@@ -42,24 +42,45 @@ export const empRepo = {
     empModel.findByIdAndUpdate(id, { active: false }).exec(),
   Create: (item: empDocument | Array<empDocument>) => empModel.create(item),
 
-  /**
-   *
-   * @param id
-   * @param inputs
-   * @returns
-   */
-  generateOutputs: async (id: Types.ObjectId, inputs: empInputs) => {
-    const { category, area, type, sqm, budget } = inputs;
-    const budgetRange = {
-      min: budget - budget * 0.18,
-      max: budget + budget * 0.25
-    };
-    const sqmRange = {
-      min: sqm - sqm * 0.2,
-      max: budget + sqm * 0.2
-    };
-    // const q_pricePerMeter = budget / sqm;
+  previewOutputs: async (inputs: empInputs) => {
+    const { category, area, type, budget } = inputs;
+    const units = await UnitModel.find({
+      category,
+      area,
+      type,
+      priceBase: {
+        $lt: budget.max,
+        $gt: budget.min
+      }
+    }).sort({
+      pricePerMeter: -1
+    });
 
+    const uniqueUnits = units.filter(
+      (value, index, self) =>
+        index === self.findIndex(t => t.developer === value.developer)
+    );
+
+    // if (uniqueUnits) {
+    //   if (uniqueUnits.length >= 3) {
+    //     const outputs = {
+    //       res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
+    //       res2: uniqueUnits[1],
+    //       res3: uniqueUnits[2]
+    //     };
+    //     return outputs;
+    //   } else {
+    //     const outputs = {
+    //       res1: uniqueUnits[0]
+    //     };
+    //     return outputs;
+    //   }
+    // }
+    return uniqueUnits;
+  },
+
+  generateOutputs: async (id: Types.ObjectId, inputs: empInputs) => {
+    const { category, area, type, budget } = inputs;
     const units = await UnitModel.find({
       category,
       area,
@@ -77,16 +98,12 @@ export const empRepo = {
     for (let index = 1; index < units.length; index++) {
       const unit = units[index];
       if (
-        Number(unit.priceBase) >= budgetRange.min &&
-        Number(unit.priceBase) <= budgetRange.max
+        Number(unit.priceBase) >= budget.min &&
+        Number(unit.priceBase) <= budget.max
       ) {
         outputs.res2 = unit;
       }
-      if (
-        Number(unit.spaceBuildUp) >= sqmRange.min &&
-        Number(unit.spaceBuildUp) <= sqmRange.max &&
-        unit._id !== outputs.res2._id
-      ) {
+      if (unit._id !== outputs.res2._id) {
         outputs.res3 = unit;
       }
     }

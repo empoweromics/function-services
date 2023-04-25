@@ -50,6 +50,18 @@ export const getEmpDetails: ExpressFunc = async (
   }
 };
 
+export const previewEmp: ExpressFunc = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = await empRepo.previewOutputs(req.body);
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 /**
  * addOpportunity submit a new one
  * @param req
