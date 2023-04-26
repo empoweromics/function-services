@@ -40,12 +40,10 @@ jobs:
           cat <<EOF > .env
           JWT_SECRET="$JWT_SECRET"
           MONGO_DB="$MONGO_DB"
-          FB_APP_SERVICE_ACCOUNT='$FB_APP_SERVICE_ACCOUNT'
           EOF
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           MONGO_DB: ${{ secrets.MONGO_DB }}
-          FB_APP_SERVICE_ACCOUNT: ${{ secrets.FB_APP_SERVICE_ACCOUNT }}
 
       # - name: "install firebase-tools"
       #   env:
