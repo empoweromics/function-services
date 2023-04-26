@@ -1,7 +1,8 @@
+import "dotenv/config";
 import * as fireFunction from "firebase-functions/v2";
+import { connectToDatabase } from "./config/db";
 import ADMIN_API from "./modules/admin/routes";
 import CLIENT_API from "./modules/client/routes";
-import { connectToDatabase } from "./config/db";
 
 connectToDatabase();
 
