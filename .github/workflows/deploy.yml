@@ -24,7 +24,7 @@ jobs:
       # this install the dependencies specified in your package.json file into the current workflow
       - name: install dependencies
         # navigates to your functions folder and install the dependencies
-        run: npm ci
+        run: npm i
 
       - name: Build App
         run: npm run build
