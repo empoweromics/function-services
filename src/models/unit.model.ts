@@ -1,12 +1,24 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
+export interface Unit {
+  category?: string;
+  type?: string;
+  area?: string;
+  finishingType?: string;
+  priceBase?: number;
+  spaceBuildUp?: number;
+  paymentYears?: number;
+  estDelivery?: [number];
+  active?: boolean;
+}
+
+export interface UnitDocument extends Unit, mongoose.Document {
+  createdAt: Date;
+  updatedAt: Date;
+}
 const UnitSchema = new Schema(
   {
-    _id: {
-      require: true,
-      type: String
-    },
     category: {
       require: true,
       type: String
@@ -16,15 +28,23 @@ const UnitSchema = new Schema(
       type: String
     },
     finishingType: String,
-    developer: {
+    area: {
       type: String,
-      ref: "developers"
+      index: true
+    },
+    developer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "developer"
     },
     project: {
-      type: String,
-      ref: "projects"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project"
     },
-    priceBase: Number,
+
+    priceBase: {
+      type: Number,
+      require: true
+    },
     spaceBuildUp: Number,
     pricePerMeter: Number,
     paymentYears: Number,
@@ -37,4 +57,3 @@ const UnitSchema = new Schema(
   { timestamps: true }
 );
 export const UnitModel = mongoose.model("unit", UnitSchema);
-export default UnitModel;

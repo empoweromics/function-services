@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { allPolygonsGeoJsonShaped } from "../../../repositories/polygon.repository";
 
-// const now = new Date();
-// const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+import { unitRepo } from "../../../repositories/unit.repository";
+import { projectRepo } from "../../../repositories/project.repository";
 
 /**
  * function to retrive all project's Polygons
@@ -39,8 +39,41 @@ export const projectDetails = async (
   res: Response,
   next: NextFunction
 ) => {
+  const id = req.params.id;
   try {
-    return res.json({ count: 500 });
+    const project = await projectRepo.findProjectDetail(id);
+    if (!project) {
+      return res.status(204).json({ message: "No content" });
+    }
+    const developer_projects = await projectRepo.findSimilarDevProjects(
+      project.developer
+    );
+
+    return res.json({ project, developer_projects });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get unit List per project
+ * @param req
+ * @param res
+ * @param next
+ * @returns
+ */
+export const availableUnits = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const projectId = req.params.id;
+  try {
+    const units = await unitRepo.getPricePerMeterGroupByType(projectId);
+    if (!units) {
+      return res.status(204).json({ message: "No content" });
+    }
+    return res.json(units);
   } catch (error) {
     next(error);
   }
@@ -53,13 +86,18 @@ export const projectDetails = async (
  * @param next
  * @returns
  */
-export const advancedSearch = async (
+export const advancedTextSearch = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    const searchText = String(req.query.text);
+    if (searchText) {
+      const data = await projectRepo.searchByTextProjects(searchText);
+      return res.json(data);
+    }
+    res.send([]);
   } catch (error) {
     next(error);
   }

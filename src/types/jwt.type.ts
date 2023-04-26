@@ -1,4 +1,5 @@
 export interface jwtTokenPayload {
-  userId: string;
+  _id: string;
+  firebaseId: string;
   role: string;
 }

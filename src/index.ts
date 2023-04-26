@@ -1,6 +1,21 @@
-import * as functions from "firebase-functions";
+import * as fireFunction from "firebase-functions/v2";
 import ADMIN_API from "./modules/admin/routes";
 import CLIENT_API from "./modules/client/routes";
+import { connectToDatabase } from "./config/db";
 
-export const admin = functions.https.onRequest(ADMIN_API);
-export const client = functions.https.onRequest(CLIENT_API);
+connectToDatabase();
+
+export const admin = fireFunction.https.onRequest(
+  {
+    timeoutSeconds: 560,
+    memory: "256MiB"
+  },
+  ADMIN_API
+);
+
+export const client = fireFunction.https.onRequest(
+  {
+    memory: "256MiB"
+  },
+  CLIENT_API
+);

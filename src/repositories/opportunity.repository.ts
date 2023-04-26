@@ -1,11 +1,34 @@
-// import type { FilterQuery, ProjectionType, QueryOptions } from "mongoose";
+import type { ProjectionType, QueryOptions, FilterQuery } from "mongoose";
 
-// import OpportunityModel from "../models/opportunity.model";
+import {
+  OpportunityDocument,
+  OpportunityModel
+} from "../models/opportunity.model";
 
 export const opportunityRepo = {
-  //   findOne: (
-  //     query: FilterQuery<opportunityDocument>,
-  //     options: QueryOptions<opportunityDocument> = { lean: true },
-  //     select: ProjectionType<opportunityDocument> = {}
-  //   ) => OpportunityModel.findOne(query, select, options).exec()
+  findById: (
+    id: string,
+    options: QueryOptions = { lean: true },
+    select: ProjectionType<OpportunityDocument> = {}
+  ) =>
+    OpportunityModel.findById(id, select, options)
+      .populate("project", "name i18n area units")
+      .exec(),
+
+  deleteOne: (id: string) => OpportunityModel.findByIdAndDelete(id).exec(),
+  Create: (item: OpportunityDocument | Array<OpportunityDocument>) =>
+    OpportunityModel.create(item),
+
+  getOpportunitiesPaginated: (
+    limit: number,
+    skip: number,
+    filter: FilterQuery<OpportunityDocument>
+  ) => {
+    return OpportunityModel.find(filter)
+      .populate("project", "name logo developer")
+      .limit(limit)
+      .skip(skip)
+      .lean()
+      .exec();
+  }
 };

@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { UserModel } from "../../../models/user.model";
 import { HttpStatus } from "../../../config/httpCodes";
+import { AcademyModel } from "../../../models/academy.model";
+import { OpportunityModel } from "../../../models/opportunity.model";
+import { DeveloperModel } from "../../../models/developer.model";
 
 /**
  * Auth data and profile balance
@@ -11,7 +14,10 @@ import { HttpStatus } from "../../../config/httpCodes";
  */
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await UserModel.findByIdAndUpdate(req.params.id, req.body);
+    let data = await UserModel.findOneAndUpdate(
+      { firebaseId: req.params.id },
+      req.body
+    );
     if (!data) {
       data = await UserModel.create(req.body);
     }
@@ -34,7 +40,24 @@ export const myAccount = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    const user = res.locals.user._id;
+    const academyCount = await AcademyModel.count();
+    const opportunity = await OpportunityModel.aggregate([
+      {
+        $match: { user }
+      },
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
+
+    return res.json({
+      balance: {
+        total: 0,
+        month: 0
+      },
+      currency: "EGP",
+      opportunity,
+      academy: { total: academyCount, level: "A1" }
+    });
   } catch (error) {
     next(error);
   }
@@ -72,7 +95,54 @@ export const updateProfile = async (
   next: NextFunction
 ) => {
   try {
-    return res.json({ count: 500 });
+    const Id = res.locals.user._id;
+    const {
+      displayName,
+      photoUrl,
+      notifications,
+      language,
+      fcm,
+      phone,
+      dateOfbirth,
+      address
+    } = req.body;
+
+    const data = await UserModel.findByIdAndUpdate(
+      Id,
+      {
+        displayName,
+        photoUrl,
+        notifications,
+        language,
+        fcm,
+        phone,
+        dateOfbirth,
+        address
+      },
+      {
+        new: true
+      }
+    ).lean();
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const topDevelopers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = await DeveloperModel.find({
+      active: true,
+      city: req.query.city
+    })
+      .select("name website rating city logo")
+      .sort({ rating: -1 })
+      .limit(9);
+    return res.json(data);
   } catch (error) {
     next(error);
   }

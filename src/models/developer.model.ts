@@ -3,14 +3,11 @@ const { Schema } = mongoose;
 
 const DeveloperSchema = new Schema(
   {
-    _id: {
-      require: true,
-      type: String
-    },
     name: {
       require: true,
       type: String
     },
+    attachments: [String],
     website: String,
     area: String,
     city: String,
@@ -26,4 +23,3 @@ const DeveloperSchema = new Schema(
 );
 
 export const DeveloperModel = mongoose.model("developer", DeveloperSchema);
-export default DeveloperModel;

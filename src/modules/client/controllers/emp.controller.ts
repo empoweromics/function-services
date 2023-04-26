@@ -1,34 +1,24 @@
 import type { NextFunction, Request, Response } from "express";
 import { ErrorMessage } from "../../../config/errors";
 import { HttpStatus } from "../../../config/httpCodes";
-import { opportunityRepo } from "../../../repositories/opportunity.repository";
 import { ExpressFunc } from "../../../types";
+import { empRepo } from "../../../repositories/emp.repository";
 
 /**
- * getAllOpportunities (Filter / search)
+ * getAllEMPs (Filter / search)
  * @param req
  * @param res
  * @param next
  * @returns
  */
-export const getAllOpportunities = async (
+export const getAllEmps: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = res.locals.user._id;
-    const page = req.headers.page
-      ? parseInt(req.headers.page.toString()) - 1
-      : 0;
-    let limit = 10;
-    const skip = page * limit;
-    limit = limit + skip;
-
-    const data = await opportunityRepo.getOpportunitiesPaginated(limit, skip, {
-      user,
-      active: true
-    });
+    const data = await empRepo.find({ user, active: true });
     if (!data)
       return res
         .status(HttpStatus.NO_CONTENT)
@@ -41,24 +31,37 @@ export const getAllOpportunities = async (
 };
 
 /**
- * getOpportunityDetails lookups
+ * getEMPDetails lookups
  * @param req
  * @param res
  * @param next
  * @returns
  */
-export const getOpportunityDetails = async (
+export const getEmpDetails: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({});
+    const data = await empRepo.findById(req.params.id);
+    return res.json(data);
   } catch (error) {
     next(error);
   }
 };
 
+export const previewEmp: ExpressFunc = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = await empRepo.previewOutputs(req.body);
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
 /**
  * addOpportunity submit a new one
  * @param req
@@ -66,33 +69,34 @@ export const getOpportunityDetails = async (
  * @param next
  * @returns
  */
-export const addOpportunity = async (
+export const createEmp: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = res.locals.user._id;
-    const data = await opportunityRepo.Create({
-      user,
-      ...req.body
+    const data = await empRepo.Create({
+      inputs: req.body,
+      active: true,
+      views: 0,
+      user
     });
 
     if (!data)
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
-    return res.status(201).json({ data });
+    empRepo.generateOutputs(data._id, req.body);
+    return res.status(201).json(data);
   } catch (error) {
     next(error);
   }
 };
 
-export const Delete: ExpressFunc = async (req, res, next) => {
+export const deleteEmp: ExpressFunc = async (req, res, next) => {
   try {
-    const data = await opportunityRepo.deleteOne(req.params.id);
+    const data = await empRepo.deactiveOne(req.params.id);
     if (data)
-      return res
-        .status(HttpStatus.OK)
-        .json({ data, message: "Resource Deleted" });
+      return res.status(HttpStatus.OK).json({ message: "Resource Deleted" });
     return res
       .status(HttpStatus.NOT_FOUND)
       .json({ message: ErrorMessage.NO_RESOURCE_FOUND });

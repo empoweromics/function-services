@@ -1,35 +1,73 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const OpportunitySchema = new Schema(
+export interface OpportunityDocument extends mongoose.Document {
+  client: object;
+  project: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
+  budget: object;
+  status?: string;
+  notes: string;
+  active: boolean;
+}
+
+const clientSchema = new Schema(
   {
-    project: {
+    name: {
       type: String,
-      required: true,
-      ref: "projects"
+      require: true
     },
-    type: {
+    phone: {
       type: String,
+      require: true
+    },
+    directly: Boolean
+  },
+  { _id: false, versionKey: false }
+);
+
+const budgetSchema = new Schema(
+  {
+    downpayment: {
+      type: Number,
       required: true
     },
-    finishingType: {
-      type: String,
+    installmentAmountDue: {
+      type: Number,
+      required: true
+    },
+    totalNumberOfInstallments: {
+      type: Number,
+      required: true
+    }
+  },
+  { _id: false, versionKey: false }
+);
+const OpportunitySchema = new Schema(
+  {
+    client: {
+      type: clientSchema,
+      required: true
+    },
+    project: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project",
+      required: true
+    },
+    budget: {
+      type: budgetSchema,
       required: true
     },
     user: {
-      type: String,
-      ref: "user",
+      type: mongoose.Schema.Types.ObjectId,
       required: true
     },
-    pricing: {
-      total: Number,
-      monthly: Number,
-      downPayment: Number
+    status: {
+      type: String,
+      enum: ["pendding", "success", "failure"],
+      default: "pendding"
     },
-    maxDelivery: {
-      type: Number,
-      default: 1
-    },
+    notes: String,
     active: {
       type: Boolean,
       default: true

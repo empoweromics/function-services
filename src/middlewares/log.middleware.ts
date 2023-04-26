@@ -13,7 +13,7 @@ export const Log: ExpressFunc = (req, res, next) => {
     res.on("finish", () => {
       // Don't block
       LoggerRepo.Create({
-        userId: res.locals.user.userId ?? "Guest",
+        userId: res.locals.user._id ?? "Guest",
         action: req.method as string,
         resource: req.originalUrl,
         type: res.statusCode < 210 ? "info" : "bad_request",
@@ -42,7 +42,7 @@ export const LogEverything: ExpressFunc = (req, res, next) => {
     res.on("finish", () => {
       // Don't block
       LoggerRepo.Create({
-        userId: res.locals.user.userId,
+        userId: res.locals.user._id,
         action: req.method as string,
         resource: req.originalUrl,
         type: res.statusCode < 210 ? "info" : "bad_request",
