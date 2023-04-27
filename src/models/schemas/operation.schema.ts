@@ -31,7 +31,13 @@ export const empSchemaValidation = z.object({
     budget: z.object({
       min: z.number(),
       max: z.number()
-    })
+    }),
+    sqm: z
+      .object({
+        min: z.number(),
+        max: z.number()
+      })
+      .optional()
   })
 });
 

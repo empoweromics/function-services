@@ -8,7 +8,6 @@ import {
 import { validate } from "../../../middlewares/validate.middleware";
 import { empSchemaValidation } from "../../../models/schemas/operation.schema";
 import { LogEverything } from "../../../middlewares";
-// import { testEMP } from "../controllers/test.controller";
 
 const router = express.Router();
 

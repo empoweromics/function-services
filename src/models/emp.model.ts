@@ -30,6 +30,20 @@ export interface empDocument {
   views: number;
 }
 
+const RangeSchema = new Schema(
+  {
+    min: {
+      type: Number,
+      required: true
+    },
+    max: {
+      type: Number,
+      required: true
+    }
+  },
+  { _id: false, versionKey: false }
+);
+
 const inputSchema = new Schema(
   {
     clientname: {
@@ -53,11 +67,11 @@ const inputSchema = new Schema(
       required: true
     },
     sqm: {
-      type: Number,
+      type: RangeSchema,
       required: true
     },
     budget: {
-      type: Number,
+      type: RangeSchema,
       required: true
     }
   },
