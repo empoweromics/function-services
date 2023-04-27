@@ -61,21 +61,21 @@ export const empRepo = {
         index === self.findIndex(t => t.developer === value.developer)
     );
 
-    // if (uniqueUnits) {
-    //   if (uniqueUnits.length >= 3) {
-    //     const outputs = {
-    //       res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-    //       res2: uniqueUnits[1],
-    //       res3: uniqueUnits[2]
-    //     };
-    //     return outputs;
-    //   } else {
-    //     const outputs = {
-    //       res1: uniqueUnits[0]
-    //     };
-    //     return outputs;
-    //   }
-    // }
+    if (uniqueUnits) {
+      if (uniqueUnits.length >= 3) {
+        const outputs = {
+          res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
+          res2: uniqueUnits[1],
+          res3: uniqueUnits[2]
+        };
+        return outputs;
+      } else {
+        const outputs = {
+          res1: uniqueUnits[0]
+        };
+        return outputs;
+      }
+    }
     return uniqueUnits;
   },
 
