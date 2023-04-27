@@ -52,31 +52,43 @@ export const empRepo = {
         $lt: budget.max,
         $gt: budget.min
       }
-    }).sort({
-      pricePerMeter: -1
-    });
+    })
+      .sort({
+        pricePerMeter: -1
+      })
+      .populate("project", "name logo state")
+      .populate("developer", "name logo state");
 
     const uniqueUnits = units.filter(
       (value, index, self) =>
-        index === self.findIndex(t => t.developer === value.developer)
+        index === self.findIndex(t => t.project === value.project)
     );
-
     if (uniqueUnits) {
+      let outputs = {
+        res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
+        res2: uniqueUnits[1],
+        res3: uniqueUnits[2],
+        lenght: uniqueUnits.length
+      };
       if (uniqueUnits.length >= 3) {
-        const outputs = {
+        outputs = {
           res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
           res2: uniqueUnits[1],
-          res3: uniqueUnits[2]
+          res3: uniqueUnits[2],
+          lenght: 3
         };
         return outputs;
       } else {
-        const outputs = {
-          res1: uniqueUnits[0]
+        outputs = {
+          res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
+          res2: uniqueUnits[1],
+          res3: uniqueUnits[2],
+          lenght: uniqueUnits.length
         };
         return outputs;
       }
     }
-    return uniqueUnits;
+    return [];
   },
 
   generateOutputs: async (id: Types.ObjectId, inputs: empInputs) => {
