@@ -40,6 +40,13 @@ export const empRepo = {
   deleteOne: (id: string) => empModel.findByIdAndDelete(id).exec(),
   deactiveOne: (id: string) =>
     empModel.findByIdAndUpdate(id, { active: false }).exec(),
+
+  submitOutputRes1: (id: Types.ObjectId) =>
+    empModel.findByIdAndUpdate(id, { "outputs.result1.submited": true }).exec(),
+  submitOutputRes2: (id: Types.ObjectId) =>
+    empModel.findByIdAndUpdate(id, { "outputs.result2.submited": true }).exec(),
+  submitOutputRes3: (id: Types.ObjectId) =>
+    empModel.findByIdAndUpdate(id, { "outputs.result3.submited": true }).exec(),
   Create: (item: empDocument | Array<empDocument>) => empModel.create(item),
 
   previewOutputs: async (inputs: empInputs) => {
