@@ -22,7 +22,7 @@ export const getAllOpportunities = async (
     const page = req.headers.page
       ? parseInt(req.headers.page.toString()) - 1
       : 0;
-    let limit = 10;
+    let limit = 1000;
     const skip = page * limit;
     limit = limit + skip;
 
@@ -80,15 +80,15 @@ export const addOpportunity = async (
     });
     if (req.body.emp?._id && req.body.emp?.selected) {
       switch (req.body.emp.selected) {
-        case "result1": {
+        case 0: {
           await empRepo.submitOutputRes1(req.body.emp._id);
           break;
         }
-        case "result2": {
+        case 1: {
           await empRepo.submitOutputRes2(req.body.emp._id);
           break;
         }
-        case "result3": {
+        case 2: {
           await empRepo.submitOutputRes3(req.body.emp._id);
           break;
         }
