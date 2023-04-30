@@ -78,7 +78,7 @@ export const addOpportunity = async (
       user,
       ...req.body
     });
-    if (req.body.emp._id && req.body.emp.selected) {
+    if (req.body.emp?._id && req.body.emp?.selected) {
       switch (req.body.emp.selected) {
         case "result1": {
           await empRepo.submitOutputRes1(req.body.emp._id);

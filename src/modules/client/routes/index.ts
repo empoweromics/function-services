@@ -19,7 +19,14 @@ CLIENT_API.use(loggerMiddleware);
 CLIENT_API.put("/auth/:id", auth);
 
 // Protected Routes
-CLIENT_API.all("/check", (req, res) => res.status(200).send("Running ..."));
+CLIENT_API.all("/check", (req, res) =>
+  res.status(200).send({
+    status: "Running ...",
+    copyright: "empoweromics.com",
+    version: "1.3.0",
+    timestamp: new Date()
+  })
+);
 CLIENT_API.use("/account", [protectedRoute], Account);
 CLIENT_API.use("/project", [protectedRoute], Project);
 CLIENT_API.use("/opportunity", [protectedRoute], Opportunity);
