@@ -3,6 +3,7 @@ import { ErrorMessage } from "../../../config/errors";
 import { HttpStatus } from "../../../config/httpCodes";
 import { opportunityRepo } from "../../../repositories/opportunity.repository";
 import { ExpressFunc } from "../../../types";
+import { empRepo } from "../../../repositories/emp.repository";
 
 /**
  * getAllOpportunities (Filter / search)
@@ -77,7 +78,27 @@ export const addOpportunity = async (
       user,
       ...req.body
     });
-
+    if (req.body.emp?._id && req.body.emp?.selected) {
+      switch (req.body.emp.selected) {
+        case "result1": {
+          await empRepo.submitOutputRes1(req.body.emp._id);
+          break;
+        }
+        case "result2": {
+          await empRepo.submitOutputRes2(req.body.emp._id);
+          break;
+        }
+        case "result3": {
+          await empRepo.submitOutputRes3(req.body.emp._id);
+          break;
+        }
+        default: {
+          return res
+            .status(409)
+            .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+        }
+      }
+    }
     if (!data)
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
     return res.status(201).json({ data });

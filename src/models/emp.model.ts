@@ -98,7 +98,11 @@ const resultSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "developer"
     },
-    unit: unitSchema
+    unit: unitSchema,
+    submited: {
+      type: Boolean,
+      default: false
+    }
   },
   { _id: false, versionKey: false }
 );
