@@ -15,13 +15,16 @@ export const empRepo = {
       .sort({ createdAt: -1 })
       .exec(),
 
-  findById: (
-    id: string,
-    options: QueryOptions = { lean: true },
-    select: ProjectionType<empDocument> = {}
-  ) =>
+  findById: (id: string, options: QueryOptions = { lean: true }) =>
     empModel
-      .findById(id, select, options)
+      // .findById(id, select, options)
+      .findByIdAndUpdate(
+        id,
+        {
+          $inc: { views: 1 }
+        },
+        options
+      )
       .populate("user", "displayName phone")
       // result1
       .populate("outputs.result1.project", "name logo i18n attachments state")

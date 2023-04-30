@@ -27,6 +27,7 @@ export const opportunityRepo = {
     return OpportunityModel.find(filter)
       .populate("project", "name logo developer")
       .limit(limit)
+      .sort({ createdAt: -1 })
       .skip(skip)
       .lean()
       .exec();

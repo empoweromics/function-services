@@ -22,7 +22,7 @@ export const getAllOpportunities = async (
     const page = req.headers.page
       ? parseInt(req.headers.page.toString()) - 1
       : 0;
-    let limit = 10;
+    let limit = 1000;
     const skip = page * limit;
     limit = limit + skip;
 
