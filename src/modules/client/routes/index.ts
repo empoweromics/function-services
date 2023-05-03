@@ -2,6 +2,7 @@ import Account from "./account.route";
 import Project from "./project.route";
 import Opportunity from "./opportunity.route";
 import Master from "./master.route";
+import Notifications from "./notifications.route";
 import Emp from "./emp.route";
 import Public from "./public.route";
 import express from "express";
@@ -31,6 +32,7 @@ CLIENT_API.use("/account", [protectedRoute], Account);
 CLIENT_API.use("/project", [protectedRoute], Project);
 CLIENT_API.use("/opportunity", [protectedRoute], Opportunity);
 CLIENT_API.use("/master", [protectedRoute], Master);
+CLIENT_API.use("/notification", [protectedRoute], Notifications);
 CLIENT_API.use("/emp", [protectedRoute], Emp);
 CLIENT_API.use("/public", Public);
 

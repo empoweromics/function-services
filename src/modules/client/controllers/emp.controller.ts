@@ -3,6 +3,8 @@ import { ErrorMessage } from "../../../config/errors";
 import { HttpStatus } from "../../../config/httpCodes";
 import { ExpressFunc } from "../../../types";
 import { empRepo } from "../../../repositories/emp.repository";
+import { notificationRepo } from "../../../repositories/notification.repository";
+import { DELETE_ACTION, SUCCESS_ACTION } from "../../../config/notifications";
 
 /**
  * getAllEMPs (Filter / search)
@@ -63,7 +65,7 @@ export const previewEmp: ExpressFunc = async (
   }
 };
 /**
- * addOpportunity submit a new one
+ * Create EMP for User to submit a new opportunity
  * @param req
  * @param res
  * @param next
@@ -85,21 +87,38 @@ export const createEmp: ExpressFunc = async (
 
     if (!data)
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
-    empRepo.generateOutputs(data._id, req.body);
+
+    empRepo.generateOutputs(data._id, req.body).then(() => {
+      notificationRepo.Create({
+        user,
+        message: SUCCESS_ACTION("EMP Link", String(data._id))
+      });
+    });
     return res.status(201).json(data);
   } catch (error) {
     next(error);
   }
 };
 
-export const deleteEmp: ExpressFunc = async (req, res, next) => {
+export const deleteEmp: ExpressFunc = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
+    const user = res.locals.user._id;
     const data = await empRepo.deactiveOne(req.params.id);
-    if (data)
+    if (data) {
+      notificationRepo.Create({
+        user,
+        message: DELETE_ACTION(`EMP Link ${req.params.id}`)
+      });
       return res.status(HttpStatus.OK).json({ message: "Resource Deleted" });
-    return res
-      .status(HttpStatus.NOT_FOUND)
-      .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+    } else {
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+    }
   } catch (err) {
     next(err);
   }

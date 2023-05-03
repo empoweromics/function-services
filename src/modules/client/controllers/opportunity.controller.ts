@@ -4,6 +4,11 @@ import { HttpStatus } from "../../../config/httpCodes";
 import { opportunityRepo } from "../../../repositories/opportunity.repository";
 import { ExpressFunc } from "../../../types";
 import { empRepo } from "../../../repositories/emp.repository";
+import { notificationRepo } from "../../../repositories/notification.repository";
+import {
+  SUCCESS_ACTION,
+  SUPMIT_OPPORTUNITY_EMP
+} from "../../../config/notifications";
 
 /**
  * getAllOpportunities (Filter / search)
@@ -79,6 +84,11 @@ export const addOpportunity = async (
       ...req.body
     });
     if (req.body.emp?._id && req.body.emp?.selected) {
+      notificationRepo.Create({
+        user,
+        topic: "EMP",
+        message: SUPMIT_OPPORTUNITY_EMP(String(req.body.emp?._id))
+      });
       switch (req.body.emp.selected) {
         case 1: {
           await empRepo.submitOutputRes1(req.body.emp._id);
@@ -99,9 +109,15 @@ export const addOpportunity = async (
         }
       }
     }
-    if (!data)
+    if (!data) {
       return res.status(409).json({ message: ErrorMessage.NO_RESOURCE_FOUND });
-    return res.status(201).json({ data });
+    } else {
+      notificationRepo.Create({
+        user,
+        message: SUCCESS_ACTION("opportunity", String(data._id))
+      });
+      return res.status(201).json({ data });
+    }
   } catch (error) {
     next(error);
   }
