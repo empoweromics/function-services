@@ -6,19 +6,16 @@ interface Result {
   developer: mongoose.Schema.Types.ObjectId;
   unit: mongoose.Schema.Types.ObjectId;
 }
-interface Range {
-  min: number;
-  max: number;
-}
+
 export interface empInputs {
   clientname: string;
   clientphone: string;
   category: string;
   area: string;
   city?: string;
-  sqm?: string;
+  sqm?: number;
   type: string;
-  budget: Range;
+  budget: number;
 }
 export interface empDocument {
   inputs: empInputs;
@@ -29,22 +26,8 @@ export interface empDocument {
   };
   active: boolean;
   user?: mongoose.Types.ObjectId;
-  views: number;
+  views?: number;
 }
-
-const RangeSchema = new Schema(
-  {
-    min: {
-      type: Number,
-      required: true
-    },
-    max: {
-      type: Number,
-      required: true
-    }
-  },
-  { _id: false, versionKey: false }
-);
 
 const inputSchema = new Schema(
   {
@@ -69,11 +52,11 @@ const inputSchema = new Schema(
       required: true
     },
     sqm: {
-      type: RangeSchema,
+      type: Number,
       required: true
     },
     budget: {
-      type: RangeSchema,
+      type: Number,
       required: true
     }
   },

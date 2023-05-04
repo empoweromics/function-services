@@ -8,13 +8,12 @@ export const loggerMiddleware = (
 ) => {
   // firebase uses fastly-client-ip,
   // dev uses x-forwarded-for and local uses normal ip...
-  const ip =
-    req.headers["fastly-client-ip"] || req.headers["x-forwarded-for"] || req.ip;
+  // const ip =
+  //   req.headers["fastly-client-ip"] || req.headers["x-forwarded-for"] || req.ip;
   res.on("finish", () => {
     info(
-      `Finished ${req.method}:${req.originalUrl} status ${
-        res.statusCode
-      } ${res.get("content-length")} - ${req.get("user-agent")} ${ip}`
+      `Finished ${req.method}:${req.originalUrl} status ${res.statusCode}`,
+      req.body
     );
   });
   next();
