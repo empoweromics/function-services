@@ -27,6 +27,7 @@ export const empSchemaValidation = z.object({
     clientphone: z.string(),
     category: z.string(),
     area: z.string(),
+    city: z.string().optional(),
     type: z.string(),
     budget: z.object({
       min: z.number(),

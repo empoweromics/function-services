@@ -15,6 +15,8 @@ export interface empInputs {
   clientphone: string;
   category: string;
   area: string;
+  city?: string;
+  sqm?: string;
   type: string;
   budget: Range;
 }

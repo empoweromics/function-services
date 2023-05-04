@@ -53,14 +53,15 @@ export const empRepo = {
   Create: (item: empDocument | Array<empDocument>) => empModel.create(item),
 
   previewOutputs: async (inputs: empInputs) => {
-    const { category, area, type, budget } = inputs;
+    const { category, area, type, sqm, budget } = inputs;
+    const outputs = [];
     const units = await UnitModel.find({
       category,
       area,
       type,
       priceBase: {
-        $lt: budget.max,
-        $gt: budget.min
+        $lte: budget.max,
+        $gte: budget.min
       }
     })
       .sort({
@@ -69,36 +70,28 @@ export const empRepo = {
       .populate("project", "name logo state")
       .populate("developer", "name logo state");
 
-    const uniqueUnits = units.filter(
-      (value, index, self) =>
-        index === self.findIndex(t => t.project === value.project)
-    );
-    if (uniqueUnits) {
-      let outputs = {
-        res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-        res2: uniqueUnits[1],
-        res3: uniqueUnits[2],
-        lenght: uniqueUnits.length
-      };
-      if (uniqueUnits.length >= 3) {
-        outputs = {
-          res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-          res2: uniqueUnits[1],
-          res3: uniqueUnits[2],
-          lenght: 3
-        };
-        return outputs;
-      } else {
-        outputs = {
-          res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-          res2: uniqueUnits[1],
-          res3: uniqueUnits[2],
-          lenght: uniqueUnits.length
-        };
-        return outputs;
-      }
+    if (sqm)
+      // const uniqueUnits = units.filter(
+      //   (value, index, self) =>
+      //     index === self.findIndex(t => t.project === value.project)
+      // );
+      return units;
+    const uniqueUnits = units;
+    if (uniqueUnits.length > 2) {
+      outputs.push(uniqueUnits[0]);
+      outputs.push(uniqueUnits[1]);
+      outputs.push(uniqueUnits[2]);
+    } else if (uniqueUnits.length === 2) {
+      outputs.push(uniqueUnits[0]);
+      outputs.push(uniqueUnits[1]);
+      // scale to get 3rd result
+    } else if (uniqueUnits.length === 1) {
+      // scale to get 2nd, 3rd result
+      outputs.push(uniqueUnits[0]);
+    } else {
+      // scale to get 2nd, 3rd result
     }
-    return [];
+    return outputs;
   },
 
   generateOutputs: async (id: Types.ObjectId, inputs: empInputs) => {

@@ -30,18 +30,17 @@ export const projectRepo = {
 
   searchByTextProjects: (searchString: string) =>
     ProjectModel.find(
-      {
-        $text: { $search: searchString },
-        score: { $meta: "textScore" }
-      },
+      { $text: { $search: searchString } },
       {
         _id: 1,
         name: 1,
+        area: 1,
         units: 1,
         logo: 1,
-        rating: 1
+        score: { $meta: "textScore" }
       }
     )
+      .populate("developer", "name logo")
       .sort({ score: { $meta: "textScore" } })
       .limit(8)
 };
