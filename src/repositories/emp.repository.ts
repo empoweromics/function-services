@@ -53,16 +53,31 @@ export const empRepo = {
   Create: (item: empDocument | Array<empDocument>) => empModel.create(item),
 
   previewOutputs: async (inputs: empInputs) => {
-    const { category, area, type, budget } = inputs;
-    const units = await UnitModel.find({
-      category,
-      area,
-      type,
-      priceBase: {
-        $lt: budget.max,
-        $gt: budget.min
-      }
-    })
+    const { category, area, type, sqm, budget } = inputs;
+
+    const filter = {
+      ...(sqm
+        ? {
+            category,
+            area,
+            type,
+            priceBase: {
+              $lte: budget
+            },
+            spaceBuildUp: {
+              $lte: sqm
+            }
+          }
+        : {
+            category,
+            area,
+            type,
+            priceBase: {
+              $lte: budget
+            }
+          })
+    };
+    const units = await UnitModel.find(filter)
       .sort({
         pricePerMeter: -1
       })
@@ -73,80 +88,68 @@ export const empRepo = {
       (value, index, self) =>
         index === self.findIndex(t => t.project === value.project)
     );
-    if (uniqueUnits) {
-      let outputs = {
-        res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-        res2: uniqueUnits[1],
-        res3: uniqueUnits[2],
-        lenght: uniqueUnits.length
-      };
-      if (uniqueUnits.length >= 3) {
-        outputs = {
-          res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-          res2: uniqueUnits[1],
-          res3: uniqueUnits[2],
-          lenght: 3
-        };
-        return outputs;
-      } else {
-        outputs = {
-          res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
-          res2: uniqueUnits[1],
-          res3: uniqueUnits[2],
-          lenght: uniqueUnits.length
-        };
-        return outputs;
-      }
-    }
-    return [];
+    return uniqueUnits.slice(0, 3);
   },
 
   generateOutputs: async (id: Types.ObjectId, inputs: empInputs) => {
-    const { category, area, type, budget } = inputs;
-    const units = await UnitModel.find({
-      category,
-      area,
-      type
-    }).sort({
-      pricePerMeter: -1
-    });
-
-    const outputs = {
-      res1: units[0], // cheapest sqm / pricePerMeter
-      res2: units[Math.floor(Math.random() * units.length)],
-      res3: units[Math.floor(Math.random() * units.length)]
+    const { category, area, type, sqm, budget } = inputs;
+    const filter = {
+      ...(sqm
+        ? {
+            category,
+            area,
+            type,
+            priceBase: {
+              $lte: budget
+            },
+            spaceBuildUp: {
+              $lte: sqm
+            }
+          }
+        : {
+            category,
+            area,
+            type,
+            priceBase: {
+              $lte: budget
+            }
+          })
     };
+    const units = await UnitModel.find(filter)
+      .sort({
+        pricePerMeter: -1
+      })
+      .populate("project", "name logo state")
+      .populate("developer", "name logo state");
 
-    for (let index = 1; index < units.length; index++) {
-      const unit = units[index];
-      if (
-        Number(unit.priceBase) >= budget.min &&
-        Number(unit.priceBase) <= budget.max
-      ) {
-        outputs.res2 = unit;
-      }
-      if (unit._id !== outputs.res2._id) {
-        outputs.res3 = unit;
-      }
-    }
+    const uniqueUnits = units.filter(
+      (value, index, self) =>
+        index === self.findIndex(t => t.project === value.project)
+    );
+    uniqueUnits.slice(0, 3);
+    const outputs = {
+      res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
+      res2: uniqueUnits[1],
+      res3: uniqueUnits[2]
+    };
 
     return empModel
       .findByIdAndUpdate(id, {
         outputs: {
           result1: {
-            project: outputs.res1.project,
-            developer: outputs.res1.developer,
+            project: outputs.res1?.project,
+            developer: outputs.res1?.developer,
             unit: outputs.res1
           },
           result2: {
-            project: outputs.res2.project,
-            developer: outputs.res2.developer,
+            project: outputs.res2?.project,
+            developer: outputs.res2?.developer,
             unit: outputs.res2
           },
           result3: {
-            project: outputs.res3.project,
-            developer: outputs.res3.developer,
-            unit: outputs.res3
+            project: outputs.res2?.project,
+            developer: outputs.res2?.developer,
+            unit: outputs.res2
           }
         }
       })

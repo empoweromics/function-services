@@ -19,7 +19,7 @@ export const getLatestNotifications: ExpressFunc = async (
     const page = req.headers.page
       ? parseInt(req.headers.page.toString()) - 1
       : 0;
-    let limit = 10;
+    let limit = 5;
     const skip = page * limit;
     limit = limit + skip;
 
@@ -30,7 +30,7 @@ export const getLatestNotifications: ExpressFunc = async (
       limit,
       skip
     );
-    return res.send({ data, length: data.length });
+    return res.send(data);
   } catch (error) {
     next(error);
   }

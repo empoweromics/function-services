@@ -81,7 +81,6 @@ export const createEmp: ExpressFunc = async (
     const data = await empRepo.Create({
       inputs: req.body,
       active: true,
-      views: 0,
       user
     });
 
