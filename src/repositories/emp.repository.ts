@@ -126,7 +126,9 @@ export const empRepo = {
       (value, index, self) =>
         index === self.findIndex(t => t.project === value.project)
     );
-    uniqueUnits.slice(0, 3);
+    if (uniqueUnits.length >= 3) {
+      uniqueUnits.slice(0, 3);
+    }
     const outputs = {
       res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
       res2: uniqueUnits[1],
@@ -147,9 +149,9 @@ export const empRepo = {
             unit: outputs.res2
           },
           result3: {
-            project: outputs.res2?.project,
-            developer: outputs.res2?.developer,
-            unit: outputs.res2
+            project: outputs.res3?.project,
+            developer: outputs.res3?.developer,
+            unit: outputs.res3
           }
         }
       })
