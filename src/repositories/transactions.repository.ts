@@ -29,7 +29,7 @@ export const transactionRepo = {
       .sort({ createdAt: -1 })
       .exec(),
 
-  Balance: (userId: string) =>
+  getUserBalance: (userId: string) =>
     TransactionModel.find({ user: userId }).sort({ createdAt: -1 }),
   Create: (item: TransactionDocument | Array<TransactionDocument>) =>
     TransactionModel.create(item),
