@@ -4,7 +4,7 @@ import {
   TransactionModel
 } from "../models/ transactions.model";
 
-export const notificationRepo = {
+export const transactionRepo = {
   find: (
     query: _FilterQuery<TransactionDocument>,
     limit = 10,
@@ -23,6 +23,14 @@ export const notificationRepo = {
     options: QueryOptions = { lean: true },
     select: ProjectionType<TransactionDocument> = {}
   ) => TransactionModel.findById(id, select, options).exec(),
+  Last100Transaction: (userId: string) =>
+    TransactionModel.find({ user: userId })
+      .limit(100)
+      .sort({ createdAt: -1 })
+      .exec(),
+
+  Balance: (userId: string) =>
+    TransactionModel.find({ user: userId }).sort({ createdAt: -1 }),
   Create: (item: TransactionDocument | Array<TransactionDocument>) =>
     TransactionModel.create(item),
   deleteOne: (id: string) => TransactionModel.findByIdAndDelete(id).exec()
