@@ -35,7 +35,7 @@ export const getAllOpportunities = async (
         .status(HttpStatus.NO_CONTENT)
         .json({ message: ErrorMessage.NO_CONTENT });
 
-    return res.send({ data, length: data.length });
+    return res.send(data);
   } catch (error) {
     next(error);
   }
