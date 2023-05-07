@@ -46,7 +46,7 @@ export const myAccount = async (
     const userBalance = await transactionRepo.getUserBalance(user);
     const opportunity = await opportunityRepo.opportunityStatusCount(user);
     return res.json({
-      balance: userBalance[0].balance,
+      balance: userBalance[0]?.balance ? userBalance[0]?.balance : 0,
       currency: "EGP",
       opportunity,
       academy: { total: academyCount, level: "A1" }
@@ -135,7 +135,7 @@ export const topDevelopers = async (
       .select("name website rating city logo")
       .sort({ rating: -1 })
       .limit(9);
-    return res.json(data);
+    return res.status(200).json(data);
   } catch (error) {
     next(error);
   }
