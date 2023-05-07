@@ -29,9 +29,37 @@ export const transactionRepo = {
       .sort({ createdAt: -1 })
       .exec(),
 
-  getUserBalance: (userId: string) =>
-    TransactionModel.find({ user: userId }).sort({ createdAt: -1 }),
+  getUserBalance: (user: string) =>
+    TransactionModel.aggregate([
+      // Get the user we want only
+      {
+        $match: {
+          user
+        }
+      },
+      {
+        // Calculate the balance
+        $group: {
+          _id: "$user",
+          balance: {
+            $sum: {
+              $cond: [
+                {
+                  $eq: ["$type", "credit"]
+                },
+                "$amount",
+                {
+                  $subtract: [0, "$amount"]
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]),
+
   Create: (item: TransactionDocument | Array<TransactionDocument>) =>
     TransactionModel.create(item),
+
   deleteOne: (id: string) => TransactionModel.findByIdAndDelete(id).exec()
 };
