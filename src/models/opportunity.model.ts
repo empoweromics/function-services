@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { notificationRepo } from "../repositories/notification.repository";
+import { SUCCESS_ACTION } from "../config/notifications";
 const { Schema } = mongoose;
 
 export interface OpportunityDocument extends mongoose.Document {
@@ -75,6 +77,13 @@ const OpportunitySchema = new Schema(
   },
   { timestamps: true }
 );
+
+OpportunitySchema.post("save", function (doc) {
+  notificationRepo.Create({
+    user: doc.user,
+    message: SUCCESS_ACTION("Opportunity")
+  });
+});
 
 export const OpportunityModel = mongoose.model(
   "opportunity",

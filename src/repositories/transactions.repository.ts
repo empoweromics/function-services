@@ -23,6 +23,7 @@ export const transactionRepo = {
     options: QueryOptions = { lean: true },
     select: ProjectionType<TransactionDocument> = {}
   ) => TransactionModel.findById(id, select, options).exec(),
+
   Last100Transaction: (userId: string) =>
     TransactionModel.find({ user: userId })
       .limit(100)
