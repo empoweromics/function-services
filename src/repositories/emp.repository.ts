@@ -40,9 +40,13 @@ export const empRepo = {
 
       .exec(),
 
-  deleteOne: (id: string) => empModel.findByIdAndDelete(id).exec(),
-  deactiveOne: (id: string) =>
-    empModel.findByIdAndUpdate(id, { active: false }).exec(),
+  deleteOne: (_id: string, user: string) =>
+    empModel.deleteOne({ _id, user }).exec(),
+  deactiveOne: (_id: string, user: string) =>
+    empModel
+      .findOneAndUpdate({ _id, user }, { active: false }, { new: true })
+      .lean()
+      .exec(),
 
   submitOutputRes1: (id: Types.ObjectId) =>
     empModel.findByIdAndUpdate(id, { "outputs.result1.submited": true }).exec(),
@@ -126,7 +130,9 @@ export const empRepo = {
       (value, index, self) =>
         index === self.findIndex(t => t.project === value.project)
     );
-    uniqueUnits.slice(0, 3);
+    if (uniqueUnits.length >= 3) {
+      uniqueUnits.slice(0, 3);
+    }
     const outputs = {
       res1: uniqueUnits[0], // cheapest sqm / pricePerMeter
       res2: uniqueUnits[1],
@@ -147,9 +153,9 @@ export const empRepo = {
             unit: outputs.res2
           },
           result3: {
-            project: outputs.res2?.project,
-            developer: outputs.res2?.developer,
-            unit: outputs.res2
+            project: outputs.res3?.project,
+            developer: outputs.res3?.developer,
+            unit: outputs.res3
           }
         }
       })

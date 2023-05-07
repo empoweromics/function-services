@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { notificationRepo } from "../repositories/notification.repository";
+import { DELETE_ACTION, SUCCESS_ACTION } from "../config/notifications";
 const { Schema } = mongoose;
 
 interface Result {
@@ -128,5 +130,20 @@ const empSchema = new Schema(
   },
   { timestamps: true }
 );
+
+empSchema.post("save", function (doc) {
+  notificationRepo.Create({
+    user: doc.user,
+    message: SUCCESS_ACTION("EMP Link")
+  });
+});
+empSchema.post("findOneAndUpdate", { query: true }, function (doc) {
+  if (doc.active === false) {
+    notificationRepo.Create({
+      user: doc.user,
+      message: DELETE_ACTION("EMP Link")
+    });
+  }
+});
 
 export const empModel = mongoose.model("emp", empSchema);

@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { UserModel } from "../../../models/user.model";
 import { HttpStatus } from "../../../config/httpCodes";
 import { AcademyModel } from "../../../models/academy.model";
-import { OpportunityModel } from "../../../models/opportunity.model";
 import { DeveloperModel } from "../../../models/developer.model";
+import { opportunityRepo } from "../../../repositories/opportunity.repository";
+import { transactionRepo } from "../../../repositories/transactions.repository";
 
 /**
  * Auth data and profile balance
@@ -42,18 +43,10 @@ export const myAccount = async (
   try {
     const user = res.locals.user._id;
     const academyCount = await AcademyModel.count();
-    const opportunity = await OpportunityModel.aggregate([
-      {
-        $match: { user }
-      },
-      { $group: { _id: "$status", count: { $sum: 1 } } }
-    ]);
-
+    const userBalance = await transactionRepo.getUserBalance(user);
+    const opportunity = await opportunityRepo.opportunityStatusCount(user);
     return res.json({
-      balance: {
-        total: 0,
-        month: 0
-      },
+      balance: userBalance[0].balance,
       currency: "EGP",
       opportunity,
       academy: { total: academyCount, level: "A1" }

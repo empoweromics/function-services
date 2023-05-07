@@ -31,5 +31,13 @@ export const opportunityRepo = {
       .skip(skip)
       .lean()
       .exec();
-  }
+  },
+
+  opportunityStatusCount: (userId: string) =>
+    OpportunityModel.aggregate([
+      {
+        $match: { user: userId }
+      },
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]).exec()
 };
