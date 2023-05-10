@@ -106,16 +106,6 @@ export const developerRepo = {
     if (body.active) filter["active"] = { $eq: body.active };
     return filter;
   },
-
-  // generateSaleReport: (from: Date, to: Date) =>
-  //   DeveloperModel.aggregate(talabatReport(from, to)),
-
-  // getUsersFarmsCount: (date: Date, status: string | undefined) =>
-  //   DeveloperModel.aggregate(UserCountFarmsAgg(date, status)),
-
-  // getUsersCountReport: (startDate: Date, endDate: Date) =>
-  //   DeveloperModel.aggregate(UsersFarmsCountAgg(startDate, endDate)),
-
   count: (query: FilterQuery<DeveloperDocument>) =>
     DeveloperModel.countDocuments(query).exec()
 };

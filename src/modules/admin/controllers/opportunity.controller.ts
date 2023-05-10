@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { opportunityRepo } from "../../../repositories/opportunity.repository";
 import { HttpStatus } from "../../../config/httpCodes";
+import { ExpressFunc } from "../../../types";
+import { ErrorMessage } from "../../../config/errors";
 
 export const getAllOpportunitis = async (
   req: Request,
@@ -38,27 +40,35 @@ export const getOneOpportunity = async (
   }
 };
 
-export const createOpportunity = async (
+export const Accept: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({});
-  } catch (error) {
-    next(error);
+    const data = await opportunityRepo.accept(req.params.id);
+    if (data) return res.status(HttpStatus.OK).json({ data });
+    return res
+      .status(HttpStatus.CONFLICT)
+      .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const updateOpportunity = async (
+export const Reject: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({});
-  } catch (error) {
-    next(error);
+    const data = await opportunityRepo.reject(req.params.id);
+    if (data) return res.status(HttpStatus.OK).json({ data });
+    return res
+      .status(HttpStatus.CONFLICT)
+      .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+  } catch (err) {
+    next(err);
   }
 };
 
