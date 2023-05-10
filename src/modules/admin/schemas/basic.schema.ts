@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { validateObjectId } from "../../../utils/zod.utils";
 
-export const developerValidation = z.object({
+export const developerSchemaValidation = z.object({
   body: z.object({
     name: z.string(),
     website: z.string().optional(),

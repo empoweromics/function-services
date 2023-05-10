@@ -6,13 +6,10 @@ import Devfeloper from "./academy.route";
 import Transaction from "./transaction.route";
 import express from "express";
 import cors from "cors";
-import { paginate } from "../../../middlewares/pagination.middleware";
-import { ExpressFunc } from "../../../types";
 
 const ADMIN_API = express();
 ADMIN_API.use(cors({ origin: true }));
 ADMIN_API.use(express.json());
-ADMIN_API.use(paginate as ExpressFunc);
 
 ADMIN_API.use("/dashboard", Dashboard);
 ADMIN_API.use("/account", Account);
