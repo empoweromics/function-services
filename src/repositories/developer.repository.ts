@@ -87,7 +87,6 @@ export const developerRepo = {
     ).exec(),
 
   filterQuery: (body: {
-    agriculturalAssociation?: string;
     name?: string;
     area?: string;
     city?: string;
@@ -102,11 +101,9 @@ export const developerRepo = {
       filter["area"] = {
         $regex: body.area
       };
-
     if (body.city) filter["city"] = { $eq: body.city };
     if (body.country) filter["country"] = { $eq: body.country };
     if (body.active) filter["active"] = { $eq: body.active };
-
     return filter;
   },
 

@@ -3,7 +3,10 @@ import { opportunityRepo } from "../../../repositories/opportunity.repository";
 import { HttpStatus } from "../../../config/httpCodes";
 import { empRepo } from "../../../repositories/emp.repository";
 import { OpportunityModel } from "../../../models/opportunity.model";
-import { opportunityStatus } from "../aggregations/charts.agg";
+import {
+  ReportStatusTimeline,
+  opportunityStatus
+} from "../aggregations/charts.agg";
 
 const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -32,13 +35,25 @@ export const Counters: ExpressFunc = async (_req, res, next) => {
 
 export const OpportunityByStatus: ExpressFunc = async (req, res, next) => {
   try {
+    const data = await OpportunityModel.aggregate(opportunityStatus());
     return res
       .status(HttpStatus.OK)
-      .json(
-        (await OpportunityModel.aggregate(
-          opportunityStatus()
-        )) as unknown as Record<string, unknown>
-      );
+      .json(data as unknown as Record<string, unknown>);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const OpportunityStatusTimelines: ExpressFunc = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const data = await OpportunityModel.aggregate(ReportStatusTimeline());
+    return res
+      .status(HttpStatus.OK)
+      .json(data as unknown as Record<string, unknown>);
   } catch (error) {
     next(error);
   }

@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-// import mongoose from "mongoose";
-
-interface FilterType {
-  project?: string;
-  type?: string;
-  finishingType?: string;
-}
+import { opportunityRepo } from "../../../repositories/opportunity.repository";
+import { HttpStatus } from "../../../config/httpCodes";
 
 export const getAllOpportunitis = async (
   req: Request,
@@ -13,9 +8,21 @@ export const getAllOpportunitis = async (
   next: NextFunction
 ) => {
   try {
-    return res.json(filterSearch({}));
-  } catch (error) {
-    next(error);
+    const page = req.headers.page
+      ? parseInt(req.headers.page.toString()) - 1
+      : 0;
+    const limit = 10;
+    const skip = page * limit;
+    const data = await opportunityRepo.findPaginated(
+      opportunityRepo.filterQuery(req.query),
+      limit,
+      skip
+    );
+    if (data)
+      return res.status(HttpStatus.OK).json({ data, length: data.length });
+    return res.status(HttpStatus.NO_CONTENT).json({});
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -65,12 +72,4 @@ export const deleteOpportunity = async (
   } catch (error) {
     next(error);
   }
-};
-
-const filterSearch = (body: FilterType) => {
-  const filter: Record<string, Record<string, string> | boolean> = {};
-  if (body.project) filter["project"] = { $eq: body.project };
-  if (body.type) filter["type"] = { $eq: body.type };
-  if (body.finishingType) filter["finishingType"] = { $eq: body.finishingType };
-  return filter;
 };
