@@ -17,7 +17,7 @@ export const getAllTransactions = async (
     const skip = page * limit;
     limit = limit + skip;
 
-    const data = await academyRepo.find({});
+    const data = await transactionRepo.find({});
     if (!data)
       return res
         .status(HttpStatus.NO_CONTENT)

@@ -8,10 +8,9 @@ import {
 } from "../controllers/opportunity.controller";
 
 const router = express.Router();
+router.put("/accept/:id", Accept);
+router.put("/reject/:id", Reject);
 router.get("/", getAllOpportunitis);
 router.get("/:id", getOneOpportunity);
-
-router.put("accept/:id", Accept);
-router.put("reject/:id", Reject);
 
 export default router;

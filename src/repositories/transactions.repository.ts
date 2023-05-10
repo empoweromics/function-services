@@ -16,6 +16,7 @@ export const transactionRepo = {
     TransactionModel.find(query, select, options)
       .skip(skip)
       .limit(limit)
+      .populate("user", "displayName phone email")
       .sort({ createdAt: -1 })
       .exec(),
 

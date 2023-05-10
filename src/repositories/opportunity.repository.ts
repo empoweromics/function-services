@@ -6,6 +6,7 @@ import {
 } from "../models/opportunity.model";
 import { opportunityStatusPerUser } from "../modules/admin/aggregations/charts.agg";
 import { ObjectId } from "../utils/utils";
+import { TransactionModel } from "../models/ transactions.model";
 
 export const opportunityRepo = {
   findById: (
@@ -50,7 +51,18 @@ export const opportunityRepo = {
       id,
       { status: "success" },
       { upsert: true, lean: true, new: true }
-    ).exec(),
+    )
+      .exec()
+      .then(opportunity =>
+        TransactionModel.create({
+          user: opportunity.user,
+          type: "credit",
+          amount: opportunity.budget.downpayment * 0.1,
+          details: `Cash ${
+            opportunity.budget.downpayment * 0.1
+          } EGP charged to your wallet opportunity id : ${opportunity._id}`
+        })
+      ),
 
   filterQuery: (body: {
     client?: string;
