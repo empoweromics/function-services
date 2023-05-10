@@ -4,6 +4,7 @@ import {
   OpportunityDocument,
   OpportunityModel
 } from "../models/opportunity.model";
+import { opportunityStatusPerUser } from "../modules/admin/aggregations/charts.agg";
 
 export const opportunityRepo = {
   findById: (
@@ -18,6 +19,9 @@ export const opportunityRepo = {
   deleteOne: (id: string) => OpportunityModel.findByIdAndDelete(id).exec(),
   Create: (item: OpportunityDocument | Array<OpportunityDocument>) =>
     OpportunityModel.create(item),
+
+  count: (query: FilterQuery<OpportunityDocument>) =>
+    OpportunityModel.countDocuments(query).exec(),
 
   getOpportunitiesPaginated: (
     limit: number,
@@ -34,10 +38,5 @@ export const opportunityRepo = {
   },
 
   opportunityStatusCount: (userId: string) =>
-    OpportunityModel.aggregate([
-      {
-        $match: { user: userId }
-      },
-      { $group: { _id: "$status", count: { $sum: 1 } } }
-    ]).exec()
+    OpportunityModel.aggregate(opportunityStatusPerUser(userId)).exec()
 };

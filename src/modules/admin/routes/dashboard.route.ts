@@ -1,8 +1,12 @@
 import express from "express";
-import { Counters } from "../controllers/dashboard.controller";
+import {
+  Counters,
+  OpportunityByStatus
+} from "../controllers/dashboard.controller";
 
 const router = express.Router();
 
 router.get("/", Counters);
+router.get("/opportunity-status", OpportunityByStatus);
 
 export default router;
