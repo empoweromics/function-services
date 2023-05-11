@@ -26,10 +26,14 @@ export const getAllOpportunities = async (
     const skip = page * limit;
     limit = limit + skip;
 
-    const data = await opportunityRepo.getOpportunitiesPaginated(limit, skip, {
-      user,
-      active: true
-    });
+    const data = await opportunityRepo.findPaginated(
+      {
+        user,
+        active: true
+      },
+      limit,
+      skip
+    );
     if (!data)
       return res
         .status(HttpStatus.NO_CONTENT)

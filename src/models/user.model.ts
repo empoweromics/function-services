@@ -48,11 +48,17 @@ const UserSchema = new mongoose.Schema(
     dateOfbirth: { type: String, default: "" },
     address: { type: String, default: "" },
     photoUrl: String,
+    password: String,
     fcm: String,
     status: {
       type: String,
       enum: ["active", "pendding", "blocked"],
-      default: "pendding"
+      default: "active"
+    },
+    role: {
+      type: String,
+      enum: ["admin", "client", "superadmin"],
+      default: "client"
     },
     language: {
       type: String,

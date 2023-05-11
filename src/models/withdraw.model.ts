@@ -23,7 +23,7 @@ const WithdrawSchema = new Schema(
     },
     method: {
       type: String,
-      enum: ["cash", "bank_account", "VC"],
+      enum: ["cash", "bank_account", "vodafone_cash"],
       default: "cash"
     },
     amount: {

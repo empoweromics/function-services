@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-// import mongoose from "mongoose";
-
-interface FilterType {
-  project?: string;
-  type?: string;
-  finishingType?: string;
-}
+import { opportunityRepo } from "../../../repositories/opportunity.repository";
+import { HttpStatus } from "../../../config/httpCodes";
+import { ExpressFunc } from "../../../types";
+import { ErrorMessage } from "../../../config/errors";
 
 export const getAllOpportunitis = async (
   req: Request,
@@ -13,9 +10,21 @@ export const getAllOpportunitis = async (
   next: NextFunction
 ) => {
   try {
-    return res.json(filterSearch({}));
-  } catch (error) {
-    next(error);
+    const page = req.headers.page
+      ? parseInt(req.headers.page.toString()) - 1
+      : 0;
+    const limit = 10;
+    const skip = page * limit;
+    const data = await opportunityRepo.findPaginated(
+      opportunityRepo.filterQuery(req.query),
+      limit,
+      skip
+    );
+    if (data)
+      return res.status(HttpStatus.OK).json({ data, length: data.length });
+    return res.status(HttpStatus.NO_CONTENT).json({});
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -31,27 +40,35 @@ export const getOneOpportunity = async (
   }
 };
 
-export const createOpportunity = async (
+export const Accept: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({});
-  } catch (error) {
-    next(error);
+    const data = await opportunityRepo.accept(req.params.id);
+    if (data) return res.status(HttpStatus.OK).json({ data });
+    return res
+      .status(HttpStatus.CONFLICT)
+      .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const updateOpportunity = async (
+export const Reject: ExpressFunc = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    return res.json({});
-  } catch (error) {
-    next(error);
+    const data = await opportunityRepo.reject(req.params.id);
+    if (data) return res.status(HttpStatus.OK).json({ data });
+    return res
+      .status(HttpStatus.CONFLICT)
+      .json({ message: ErrorMessage.NO_RESOURCE_FOUND });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -65,12 +82,4 @@ export const deleteOpportunity = async (
   } catch (error) {
     next(error);
   }
-};
-
-const filterSearch = (body: FilterType) => {
-  const filter: Record<string, Record<string, string> | boolean> = {};
-  if (body.project) filter["project"] = { $eq: body.project };
-  if (body.type) filter["type"] = { $eq: body.type };
-  if (body.finishingType) filter["finishingType"] = { $eq: body.finishingType };
-  return filter;
 };

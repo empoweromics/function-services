@@ -15,6 +15,9 @@ export const empRepo = {
       .sort({ createdAt: -1 })
       .exec(),
 
+  count: (query: _FilterQuery<empDocument>) =>
+    empModel.countDocuments(query).exec(),
+
   findById: (id: string, options: QueryOptions = { lean: true }) =>
     empModel
       // .findById(id, select, options)

@@ -1,10 +1,7 @@
 import express from "express";
-import { createTransaction } from "../controllers/transaction.controller";
-import { validate } from "../../../middlewares/validate.middleware";
-import { transactionsSchemaValidation } from "../schemas/basic.schema";
+import { getAllTransactions } from "../controllers/transaction.controller";
 
 const router = express.Router();
-
-router.post("/", [validate(transactionsSchemaValidation)], createTransaction);
+router.get("/", getAllTransactions);
 
 export default router;

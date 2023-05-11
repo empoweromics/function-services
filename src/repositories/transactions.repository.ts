@@ -3,6 +3,7 @@ import {
   TransactionDocument,
   TransactionModel
 } from "../models/ transactions.model";
+import { getUserBalanceAggregation } from "../modules/client/aggregations/user.agg";
 
 export const transactionRepo = {
   find: (
@@ -15,6 +16,7 @@ export const transactionRepo = {
     TransactionModel.find(query, select, options)
       .skip(skip)
       .limit(limit)
+      .populate("user", "displayName phone email")
       .sort({ createdAt: -1 })
       .exec(),
 
@@ -31,33 +33,7 @@ export const transactionRepo = {
       .exec(),
 
   getUserBalance: (user: string) =>
-    TransactionModel.aggregate([
-      // Get the user we want only
-      {
-        $match: {
-          user
-        }
-      },
-      {
-        // Calculate the balance
-        $group: {
-          _id: "$user",
-          balance: {
-            $sum: {
-              $cond: [
-                {
-                  $eq: ["$type", "credit"]
-                },
-                "$amount",
-                {
-                  $subtract: [0, "$amount"]
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]),
+    TransactionModel.aggregate(getUserBalanceAggregation(user)),
 
   Create: (item: TransactionDocument | Array<TransactionDocument>) =>
     TransactionModel.create(item),
