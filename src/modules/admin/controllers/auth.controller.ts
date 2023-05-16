@@ -10,8 +10,8 @@ export const loginByEmail = async (
   next: NextFunction
 ) => {
   try {
-    const { email } = req.body;
-    const user = await UserModel.findOne({ email, role: "admin" });
+    const { email, password } = req.body;
+    const user = await UserModel.findOne({ email, password, role: "admin" });
     if (!user)
       return res.status(403).json({
         error: ErrorCode.INVALID_EMAIL,

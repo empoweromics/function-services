@@ -20,8 +20,7 @@ export const getAllOpportunitis = async (
       limit,
       skip
     );
-    if (data)
-      return res.status(HttpStatus.OK).json({ data, length: data.length });
+    if (data) return res.status(HttpStatus.OK).json(data);
     return res.status(HttpStatus.NO_CONTENT).json({});
   } catch (err) {
     next(err);
