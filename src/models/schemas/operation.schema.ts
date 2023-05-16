@@ -34,6 +34,13 @@ export const empSchemaValidation = z.object({
   })
 });
 
+export const withdrowSchemaValidation = z.object({
+  body: z.object({
+    amount: z.number({ required_error: "amount value is required" }),
+    method: z.string()
+  })
+});
+
 export const academySchemaValidation = z.object({
   body: z.object({
     title: z.string(),

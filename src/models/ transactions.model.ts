@@ -5,7 +5,7 @@ export interface TransactionDocument {
   user: mongoose.Types.ObjectId;
   type?: string;
   amount: number;
-  details: string;
+  details?: string;
 }
 
 const TransactionSchema = new Schema(

@@ -29,18 +29,6 @@ export const getAllTransactions = async (
   }
 };
 
-export const getOneLesson = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    return res.json({});
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const createTransaction = async (
   req: Request,
   res: Response,

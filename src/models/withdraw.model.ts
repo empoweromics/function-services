@@ -5,8 +5,8 @@ export interface WithdrawDocument {
   user: mongoose.Types.ObjectId;
   status?: string;
   amount: number;
-  method: string;
-  details: string;
+  method?: string;
+  details?: string;
 }
 
 const WithdrawSchema = new Schema(
