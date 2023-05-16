@@ -43,10 +43,10 @@ export const myAccount = async (
   try {
     const user = res.locals.user._id;
     const academyCount = await AcademyModel.count();
-    const userBalance = await transactionRepo.getUserBalance(user);
+    const balance = await transactionRepo.getUserBalance(user);
     const opportunity = await opportunityRepo.opportunityStatusCount(user);
     return res.json({
-      balance: userBalance[0]?.balance ? userBalance[0]?.balance : 0,
+      balance,
       currency: "EGP",
       opportunity,
       academy: { total: academyCount, level: "A1" }
