@@ -4,6 +4,7 @@ import {
   TransactionModel
 } from "../models/ transactions.model";
 import { getUserBalanceAggregation } from "../modules/client/aggregations/user.agg";
+import { WithdrawDocument, WithdrawModel } from "../models/withdraw.model";
 
 export const transactionRepo = {
   find: (
@@ -33,10 +34,15 @@ export const transactionRepo = {
       .exec(),
 
   getUserBalance: (user: string) =>
-    TransactionModel.aggregate(getUserBalanceAggregation(user)),
+    TransactionModel.aggregate(getUserBalanceAggregation(user)).then(data =>
+      data[0]?.balance ? data[0]?.balance : 0
+    ),
 
   Create: (item: TransactionDocument | Array<TransactionDocument>) =>
     TransactionModel.create(item),
+
+  Withdraw: (item: WithdrawDocument | Array<WithdrawDocument>) =>
+    WithdrawModel.create(item),
 
   deleteOne: (id: string) => TransactionModel.findByIdAndDelete(id).exec()
 };

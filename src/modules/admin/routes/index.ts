@@ -12,11 +12,11 @@ import { verifyToken } from "../../../middlewares/admin.middleware";
 const ADMIN_API = express();
 ADMIN_API.use(cors({ origin: true }));
 ADMIN_API.use(express.json());
+ADMIN_API.use("/auth", Auth);
 
 ADMIN_API.use(verifyToken);
 ADMIN_API.use("/opportunity", Opportunity);
 ADMIN_API.use("/dashboard", Dashboard);
-ADMIN_API.use("/auth", Auth);
 ADMIN_API.use("/developer", Devfeloper);
 ADMIN_API.use("/project", Project);
 ADMIN_API.use("/academy", Academy);

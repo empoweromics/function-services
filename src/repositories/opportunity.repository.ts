@@ -35,6 +35,7 @@ export const opportunityRepo = {
       .skip(skip)
       .limit(limit)
       .populate("project", "name logo developer")
+      .populate("user", "displayName email phone")
       .sort({ createdAt: -1 })
       .lean()
       .exec(),
