@@ -13,7 +13,7 @@ export const getAllOpportunitis = async (
     const page = req.headers.page
       ? parseInt(req.headers.page.toString()) - 1
       : 0;
-    const limit = 10;
+    const limit = 1000;
     const skip = page * limit;
     const data = await opportunityRepo.findPaginated(
       opportunityRepo.filterQuery(req.query),
